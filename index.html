@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>烤串英雄 - Grill Hero</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap');
+      body {
+        font-family: 'Noto Sans TC', sans-serif;
+        background-color: #1a1a1a;
+        color: #fff;
+        overflow: hidden; /* Prevent scrolling on mobile */
+      }
+      /* Custom scrollbar for shop */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #2d2d2d; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ef4444; 
+        border-radius: 4px;
+      }
+
+      /* Level Up Animations */
+      @keyframes levelUpPop {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.4) rotate(5deg); filter: brightness(1.5); }
+        100% { transform: scale(1); filter: brightness(1); }
+      }
+      
+      .animate-level-up {
+        animation: levelUpPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      @keyframes floatUp {
+        0% { transform: translateY(0) scale(1); opacity: 1; }
+        100% { transform: translateY(-40px) scale(1.2); opacity: 0; }
+      }
+
+      /* Attack Recoil Animation */
+      @keyframes recoil {
+        0% { transform: scale(1) translateX(0); }
+        20% { transform: scale(0.9) translateX(-5px); } 
+        40% { transform: scale(1.1) translateX(5px); }
+        100% { transform: scale(1) translateX(0); }
+      }
+      
+      .animate-recoil {
+        animation: recoil 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+      }
+
+      /* Damage Animations */
+      @keyframes shake {
+        0% { transform: translate(1px, 1px) rotate(0deg); }
+        10% { transform: translate(-1px, -2px) rotate(-1deg); }
+        20% { transform: translate(-3px, 0px) rotate(1deg); }
+        30% { transform: translate(3px, 2px) rotate(0deg); }
+        40% { transform: translate(1px, -1px) rotate(1deg); }
+        50% { transform: translate(-1px, 2px) rotate(-1deg); }
+        60% { transform: translate(-3px, 1px) rotate(0deg); }
+        70% { transform: translate(3px, 1px) rotate(-1deg); }
+        80% { transform: translate(-1px, -1px) rotate(1deg); }
+        90% { transform: translate(1px, 2px) rotate(0deg); }
+        100% { transform: translate(1px, -2px) rotate(-1deg); }
+      }
+
+      .animate-shake {
+        animation: shake 0.5s;
+        animation-iteration-count: 1;
+      }
+
+      @keyframes redFlash {
+        0% { box-shadow: inset 0 0 0 0 rgba(220, 38, 38, 0); }
+        50% { box-shadow: inset 0 0 50px 20px rgba(220, 38, 38, 0.5); }
+        100% { box-shadow: inset 0 0 0 0 rgba(220, 38, 38, 0); }
+      }
+
+      .animate-damage {
+        animation: redFlash 0.3s ease-out;
+      }
+
+      /* Skill Unlock Animation - Bouncy! */
+      @keyframes skillUnlockPop {
+        0% { transform: scale(1); }
+        40% { transform: scale(1.4); color: #60A5FA; text-shadow: 0 0 10px rgba(96, 165, 250, 0.8); }
+        60% { transform: scale(0.9); }
+        80% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+      }
+
+      .animate-skill-unlock {
+        animation: skillUnlockPop 0.5s cubic-bezier(0.36, 0, 0.66, -0.56);
+      }
+
+      /* Fire Background Animation */
+      @keyframes fireFlicker {
+        0% { opacity: 0.3; transform: scaleY(1); }
+        25% { opacity: 0.5; transform: scaleY(1.05); }
+        50% { opacity: 0.3; transform: scaleY(0.95); }
+        75% { opacity: 0.45; transform: scaleY(1.02); }
+        100% { opacity: 0.3; transform: scaleY(1); }
+      }
+
+      .animate-fire-glow {
+        animation: fireFlicker 4s infinite ease-in-out;
+      }
+
+      /* Running Animation for Loading Screen */
+      @keyframes running {
+        0% { transform: translateY(0) rotate(5deg); }
+        25% { transform: translateY(-10px) rotate(0deg); }
+        50% { transform: translateY(0) rotate(-5deg); }
+        75% { transform: translateY(-10px) rotate(0deg); }
+        100% { transform: translateY(0) rotate(5deg); }
+      }
+
+      .animate-run {
+        animation: running 0.4s infinite linear;
+      }
+
+      /* Cinematic Transitions */
+      @keyframes smokePass {
+        0% { transform: translateX(-100%); opacity: 0; }
+        40% { transform: translateX(0%); opacity: 1; }
+        60% { transform: translateX(0%); opacity: 1; }
+        100% { transform: translateX(100%); opacity: 0; }
+      }
+
+      .animate-smoke {
+        animation: smokePass 1.2s ease-in-out forwards;
+      }
+
+      @keyframes titleDrop {
+        0% { transform: translateY(-100px) scale(0.8); opacity: 0; }
+        60% { transform: translateY(20px) scale(1.1); opacity: 1; }
+        80% { transform: translateY(-10px) scale(0.95); }
+        100% { transform: translateY(0) scale(1); opacity: 1; }
+      }
+
+      .animate-title-drop {
+        animation: titleDrop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      }
+
+      @keyframes zoomInFade {
+        0% { transform: scale(0.9); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+      }
+
+      .animate-zoom-in {
+        animation: zoomInFade 0.5s ease-out forwards;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.33.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.561.0"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
