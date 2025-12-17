@@ -4,33 +4,73 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <meta name="theme-color" content="#1a0505" />
+    <meta name="theme-color" content="#0f0505" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <title>烤串英雄 - Grill Hero</title>
+    <title>烤串英雄 2.0 - Grill Hero Ultimate</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Noto+Sans+TC:wght@400;700;900&display=swap');
+      
+      :root {
+        --grill-dark: #0f0505;
+        --ember-orange: #f97316;
+        --hellfire-blue: #3b82f6;
+      }
+
       body {
         font-family: 'Noto Sans TC', sans-serif;
-        background-color: #1a0505;
+        background-color: var(--grill-dark);
         color: #fff;
-        overflow: hidden; /* Prevent scrolling on mobile */
-        touch-action: none; /* Prevent browser pinch/zoom behaviors */
+        overflow: hidden;
+        touch-action: none;
         user-select: none;
         -webkit-user-select: none;
+        /* Subtle noise texture for grit */
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
       }
-      /* Custom scrollbar for shop */
+
+      /* Fonts */
+      .font-display {
+        font-family: 'Black Ops One', cursive; /* Gaming/Military feel */
+      }
+
+      /* Custom Scrollbar */
       ::-webkit-scrollbar {
         width: 6px;
         height: 6px;
       }
       ::-webkit-scrollbar-track {
-        background: rgba(45, 45, 45, 0.5); 
+        background: rgba(0, 0, 0, 0.3); 
       }
       ::-webkit-scrollbar-thumb {
-        background: #ef4444; 
-        border-radius: 4px;
+        background: #4b5563; 
+        border-radius: 10px;
+        border: 1px solid #1f2937;
+      }
+
+      /* 3D Button Press Effect */
+      .btn-3d {
+        transition: all 0.1s;
+        box-shadow: 0 4px 0 rgba(0,0,0,0.5);
+      }
+      .btn-3d:active:not(:disabled) {
+        transform: translateY(4px);
+        box-shadow: 0 0 0 rgba(0,0,0,0.5);
+      }
+
+      /* Textures */
+      .bg-wood {
+        background-color: #3f2e23;
+        background-image: 
+          repeating-linear-gradient(45deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 2px, transparent 2px, transparent 4px),
+          linear-gradient(to bottom, #4a3627, #2d1f16);
+      }
+      
+      .bg-metal-grate {
+        background-color: #1a1a1a;
+        background-image: linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent);
+        background-size: 50px 50px;
       }
 
       /* Rotate Prompt */
@@ -46,86 +86,63 @@
         }
       }
 
-      /* Level Up Animations */
+      /* Animations */
+      @keyframes heatHaze {
+        0% { filter: blur(0px) hue-rotate(0deg); transform: scale(1); }
+        50% { filter: blur(1px) hue-rotate(-5deg); transform: scale(1.01); }
+        100% { filter: blur(0px) hue-rotate(0deg); transform: scale(1); }
+      }
+      
+      .animate-heat {
+        animation: heatHaze 3s infinite ease-in-out;
+      }
+
       @keyframes levelUpPop {
         0% { transform: scale(1); }
         50% { transform: scale(1.4) rotate(5deg); filter: brightness(1.5); }
         100% { transform: scale(1); filter: brightness(1); }
       }
-      
-      .animate-level-up {
-        animation: levelUpPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      }
+      .animate-level-up { animation: levelUpPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-      /* Attack Recoil Animation */
       @keyframes recoil {
         0% { transform: scale(1) translateX(0); }
         20% { transform: scale(0.9) translateX(-5px); } 
         40% { transform: scale(1.1) translateX(5px); }
         100% { transform: scale(1) translateX(0); }
       }
-      
-      .animate-recoil {
-        animation: recoil 0.2s cubic-bezier(0.25, 1, 0.5, 1);
-      }
+      .animate-recoil { animation: recoil 0.2s cubic-bezier(0.25, 1, 0.5, 1); }
 
-      /* Damage Animations */
       @keyframes shake {
         0% { transform: translate(1px, 1px) rotate(0deg); }
         10% { transform: translate(-1px, -2px) rotate(-1deg); }
-        20% { transform: translate(-3px, 0px) rotate(1deg); }
         30% { transform: translate(3px, 2px) rotate(0deg); }
-        40% { transform: translate(1px, -1px) rotate(1deg); }
         50% { transform: translate(-1px, 2px) rotate(-1deg); }
-        60% { transform: translate(-3px, 1px) rotate(0deg); }
         70% { transform: translate(3px, 1px) rotate(-1deg); }
-        80% { transform: translate(-1px, -1px) rotate(1deg); }
         90% { transform: translate(1px, 2px) rotate(0deg); }
         100% { transform: translate(1px, -2px) rotate(-1deg); }
       }
-
-      .animate-shake {
-        animation: shake 0.5s;
-        animation-iteration-count: 1;
-      }
+      .animate-shake { animation: shake 0.5s; }
 
       @keyframes redFlash {
         0% { box-shadow: inset 0 0 0 0 rgba(220, 38, 38, 0); }
         50% { box-shadow: inset 0 0 50px 20px rgba(220, 38, 38, 0.5); }
         100% { box-shadow: inset 0 0 0 0 rgba(220, 38, 38, 0); }
       }
+      .animate-damage { animation: redFlash 0.3s ease-out; }
 
-      .animate-damage {
-        animation: redFlash 0.3s ease-out;
-      }
-
-      /* Skill Unlock Animation */
       @keyframes skillUnlockPop {
         0% { transform: scale(1); }
         40% { transform: scale(1.4); color: #60A5FA; text-shadow: 0 0 10px rgba(96, 165, 250, 0.8); }
-        60% { transform: scale(0.9); }
-        80% { transform: scale(1.1); }
         100% { transform: scale(1); }
       }
+      .animate-skill-unlock { animation: skillUnlockPop 0.5s cubic-bezier(0.36, 0, 0.66, -0.56); }
 
-      .animate-skill-unlock {
-        animation: skillUnlockPop 0.5s cubic-bezier(0.36, 0, 0.66, -0.56);
-      }
-
-      /* Fire Background Animation */
       @keyframes fireFlicker {
-        0% { opacity: 0.3; transform: scaleY(1); }
-        25% { opacity: 0.5; transform: scaleY(1.05); }
-        50% { opacity: 0.3; transform: scaleY(0.95); }
-        75% { opacity: 0.45; transform: scaleY(1.02); }
-        100% { opacity: 0.3; transform: scaleY(1); }
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.5; }
       }
+      .animate-fire-glow { animation: fireFlicker 3s infinite ease-in-out; }
 
-      .animate-fire-glow {
-        animation: fireFlicker 4s infinite ease-in-out;
-      }
-
-      /* Running Animation */
       @keyframes running {
         0% { transform: translateY(0) rotate(5deg); }
         25% { transform: translateY(-10px) rotate(0deg); }
@@ -133,42 +150,28 @@
         75% { transform: translateY(-10px) rotate(0deg); }
         100% { transform: translateY(0) rotate(5deg); }
       }
+      .animate-run { animation: running 0.4s infinite linear; }
 
-      .animate-run {
-        animation: running 0.4s infinite linear;
-      }
-
-      /* Cinematic Transitions */
       @keyframes smokePass {
         0% { transform: translateX(-100%); opacity: 0; }
         40% { transform: translateX(0%); opacity: 1; }
         60% { transform: translateX(0%); opacity: 1; }
         100% { transform: translateX(100%); opacity: 0; }
       }
-
-      .animate-smoke {
-        animation: smokePass 1.2s ease-in-out forwards;
-      }
+      .animate-smoke { animation: smokePass 1.2s ease-in-out forwards; }
 
       @keyframes titleDrop {
         0% { transform: translateY(-100px) scale(0.8); opacity: 0; }
         60% { transform: translateY(20px) scale(1.1); opacity: 1; }
-        80% { transform: translateY(-10px) scale(0.95); }
         100% { transform: translateY(0) scale(1); opacity: 1; }
       }
-
-      .animate-title-drop {
-        animation: titleDrop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-      }
+      .animate-title-drop { animation: titleDrop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
 
       @keyframes zoomInFade {
         0% { transform: scale(0.9); opacity: 0; }
         100% { transform: scale(1); opacity: 1; }
       }
-
-      .animate-zoom-in {
-        animation: zoomInFade 0.5s ease-out forwards;
-      }
+      .animate-zoom-in { animation: zoomInFade 0.5s ease-out forwards; }
     </style>
   <script type="importmap">
 {
@@ -183,7 +186,7 @@
 </script>
 </head>
   <body>
-    <div id="rotate-prompt" class="fixed inset-0 bg-[#1a0505] z-[9999] flex flex-col items-center justify-center text-center p-8">
+    <div id="rotate-prompt" class="fixed inset-0 bg-[#0f0505] z-[9999] flex flex-col items-center justify-center text-center p-8 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]">
        <div class="animate-bounce mb-8 text-orange-500">
           <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
              <path d="M12 3a9 9 0 1 0 9 9" />
@@ -191,8 +194,8 @@
              <path d="M16 7l-4-4-4 4" />
           </svg>
        </div>
-       <h2 class="text-2xl font-bold text-white mb-2">請旋轉您的裝置</h2>
-       <p class="text-gray-400">為了最佳的燒烤體驗，<br/>請使用橫向模式遊玩《烤串英雄》。</p>
+       <h2 class="text-3xl font-display text-white mb-4">ROTATE DEVICE</h2>
+       <p class="text-gray-400 font-sans">為了最佳的燒烤體驗，<br/>請將您的裝置轉為橫向。</p>
     </div>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>

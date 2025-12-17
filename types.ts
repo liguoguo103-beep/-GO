@@ -107,7 +107,6 @@ export interface IngredientStats {
   cost: number;
   name: string;
   description: string;
-  // friendlyFire removed
 }
 
 export interface Skill {
@@ -190,4 +189,6 @@ export interface GameState {
   isOverheated: boolean;
   overheatEndTime: number;
   mapConfig: MapConfig;
+  combo: number; // 2.0 Feature
+  activeBossId?: string; // 2.0 Feature
 }
