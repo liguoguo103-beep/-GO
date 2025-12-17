@@ -133,7 +133,7 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
                <p className="text-stone-400 text-xs">等級每提升 5 級獲得 1 點 SP。</p>
             </div>
             <div className="text-right bg-blue-900/30 px-3 py-1 rounded border border-blue-500/30">
-               <div className="text-xs text-blue-300 uppercase font-bold">Skill Points</div>
+               <div className="text-xs text-blue-300 uppercase font-bold">技能點 (SP)</div>
                <div className="text-2xl font-black text-white">{ingredient.availableSkillPoints}</div>
             </div>
          </div>
@@ -157,10 +157,10 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
                   <div key={tier} className="relative">
                     <div className="flex items-center gap-2 mb-3">
                         <div className={`text-xs font-black px-2 py-1 rounded uppercase tracking-wider ${isTierUnlocked ? 'bg-blue-600 text-white shadow-md' : 'bg-stone-700 text-stone-500'}`}>
-                          Tier {tier}
+                          階層 {tier}
                         </div>
                         <div className="h-px bg-stone-700 flex-1"></div>
-                        <div className="text-[10px] text-stone-500 font-mono">REQ: Lv.{tierSkills[0].unlockLevel}</div>
+                        <div className="text-[10px] text-stone-500 font-mono">需求等級: Lv.{tierSkills[0].unlockLevel}</div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -202,7 +202,7 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
                               
                               {!isSelected && isTierUnlocked && (
                                 <div className={`text-[10px] text-center py-1 rounded font-bold uppercase tracking-wider relative z-10 ${canAfford ? 'bg-yellow-600 text-white shadow-sm' : 'bg-stone-800 text-stone-600'}`}>
-                                   {canAfford ? 'UNLOCK' : 'NOT ENOUGH SP'}
+                                   {canAfford ? '解鎖' : 'SP不足'}
                                 </div>
                               )}
                             </button>
@@ -217,7 +217,7 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
          <div className="absolute bottom-0 left-0 right-0 pt-4 bg-gradient-to-t from-[#1e1e1e] to-transparent pointer-events-none h-12"></div>
          <div className="sticky bottom-0 bg-[#251e1a] border-t border-white/5 p-2 rounded-b-xl shadow-lg">
              <button onClick={() => onResetSkills(selectedSlot.id)} className="w-full flex items-center justify-center gap-2 py-2 rounded bg-red-900/20 border border-red-900/50 text-red-400 hover:bg-red-900/40 text-xs transition-colors font-bold uppercase tracking-widest">
-                <RotateCcw size={14} /> Reset Skills (${GAME_Config.SKILL_RESET_COST})
+                <RotateCcw size={14} /> 重置技能 (${GAME_Config.SKILL_RESET_COST})
              </button>
          </div>
       </div>
@@ -245,9 +245,9 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
       <div className="flex flex-col h-full">
         {/* Toggle View */}
         <div className="flex bg-black/40 p-1 rounded-lg shrink-0 mb-4 border border-white/5">
-           <button onClick={() => setViewMode('STATS')} className={`flex-1 py-2 rounded-md text-xs font-black uppercase tracking-widest transition-all ${viewMode === 'STATS' ? 'bg-stone-700 text-white shadow' : 'text-stone-500 hover:text-stone-300'}`}>Stats</button>
+           <button onClick={() => setViewMode('STATS')} className={`flex-1 py-2 rounded-md text-xs font-black uppercase tracking-widest transition-all ${viewMode === 'STATS' ? 'bg-stone-700 text-white shadow' : 'text-stone-500 hover:text-stone-300'}`}>數值</button>
            <button onClick={() => setViewMode('SKILLS')} className={`flex-1 py-2 rounded-md text-xs font-black uppercase tracking-widest transition-all relative ${viewMode === 'SKILLS' ? 'bg-blue-700 text-white shadow' : 'text-stone-500 hover:text-stone-300'}`}>
-             Skills {ingredient.availableSkillPoints > 0 && <span className="absolute top-1 right-2 w-2 h-2 bg-red-500 rounded-full animate-ping"></span>}
+             技能 {ingredient.availableSkillPoints > 0 && <span className="absolute top-1 right-2 w-2 h-2 bg-red-500 rounded-full animate-ping"></span>}
            </button>
         </div>
 
@@ -279,21 +279,21 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
               {/* Stats Display */}
               <div className="grid grid-cols-1 gap-2 mb-4">
                   <div className="flex items-center justify-between bg-black/20 px-3 py-2 rounded border border-white/5">
-                      <div className="text-stone-400 text-xs font-bold uppercase flex items-center gap-2"><Sword size={14} className="text-red-500"/> Damage</div>
+                      <div className="text-stone-400 text-xs font-bold uppercase flex items-center gap-2"><Sword size={14} className="text-red-500"/> 傷害</div>
                       <div className="flex items-baseline gap-2">
                           <span className="text-xl font-black text-white">{currentDmg}</span>
                           {!isMaxLevel && <div className="text-xs text-green-500 font-mono animate-pulse">▲ {nextDmg}</div>}
                       </div>
                   </div>
                   <div className="flex items-center justify-between bg-black/20 px-3 py-2 rounded border border-white/5">
-                      <div className="text-stone-400 text-xs font-bold uppercase flex items-center gap-2"><Heart size={14} className="text-green-500"/> Health</div>
+                      <div className="text-stone-400 text-xs font-bold uppercase flex items-center gap-2"><Heart size={14} className="text-green-500"/> 生命</div>
                       <div className="flex items-baseline gap-2">
                           <span className="text-xl font-black text-white">{Math.floor(ingredient.maxHp)}</span>
                           {!isMaxLevel && <div className="text-xs text-green-500 font-mono animate-pulse">▲ {nextHp}</div>}
                       </div>
                   </div>
                   <div className="flex items-center justify-between bg-black/20 px-3 py-2 rounded border border-white/5">
-                      <div className="text-stone-400 text-xs font-bold uppercase flex items-center gap-2"><Clock size={14} className="text-blue-500"/> Rate</div>
+                      <div className="text-stone-400 text-xs font-bold uppercase flex items-center gap-2"><Clock size={14} className="text-blue-500"/> 攻速</div>
                       <div className="flex items-baseline gap-2">
                           <span className="text-xl font-black text-white">{(currentSpeedMs/1000).toFixed(2)}s</span>
                           {!isMaxLevel && <div className="text-xs text-green-500 font-mono animate-pulse">▼ {(nextSpeedMs/1000).toFixed(2)}s</div>}
@@ -304,7 +304,7 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
               {/* Active Skills Mini-View */}
               <div className="mt-auto">
                   <div className="text-[10px] text-stone-500 uppercase font-black mb-2 flex items-center gap-1">
-                      <ShieldCheck size={12} /> Active Traits
+                      <ShieldCheck size={12} /> 激活特質
                   </div>
                   <div className="flex flex-wrap gap-2">
                       {activeSkillsList.length > 0 ? (
@@ -314,7 +314,7 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
                               </div>
                           ))
                       ) : (
-                          <span className="text-stone-600 text-[10px] italic">No traits active</span>
+                          <span className="text-stone-600 text-[10px] italic">無激活特質</span>
                       )}
                   </div>
               </div>
@@ -331,8 +331,8 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
                 `}
               >
                   <div className="flex flex-col items-center leading-none gap-1">
-                      <span className="flex items-center gap-2 text-sm"><ArrowUp size={16} /> Upgrade</span>
-                      {!isMaxLevel ? <span className="text-[10px] font-mono opacity-80 bg-black/20 px-1 rounded">${upgradeCost}</span> : <span className="text-[10px]">MAXED</span>}
+                      <span className="flex items-center gap-2 text-sm"><ArrowUp size={16} /> 升級</span>
+                      {!isMaxLevel ? <span className="text-[10px] font-mono opacity-80 bg-black/20 px-1 rounded">${upgradeCost}</span> : <span className="text-[10px]">已滿級</span>}
                   </div>
               </button>
 
@@ -346,7 +346,7 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
                 `}
               >
                  <div className="flex flex-col items-center leading-none gap-1">
-                     <span className="flex items-center gap-2 text-sm"><X size={16} /> Sell</span>
+                     <span className="flex items-center gap-2 text-sm"><X size={16} /> 販賣</span>
                      {!isCaptain && <span className="text-[10px] font-mono opacity-80">+$ {Math.floor(stats.cost * 0.5)}</span>}
                  </div>
               </button>
@@ -375,7 +375,7 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
              </div>
              <div>
                 <h2 className="text-2xl font-black text-amber-500 uppercase tracking-widest font-display drop-shadow-md">
-                   {currentIngredient ? 'Upgrade Station' : 'The Market'}
+                   {currentIngredient ? '強化工坊' : '食材市場'}
                 </h2>
                 <div className="flex items-center gap-3 text-xs text-stone-400 font-bold">
                    <span className="flex items-center gap-1 bg-black/30 px-2 py-0.5 rounded text-yellow-400"><Coins size={12}/> ${gameState.money}</span>
@@ -398,11 +398,11 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
             </div>
             <div className="flex-1 bg-stone-800/50 p-2 rounded-lg border border-white/5 relative">
                 <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-2 h-2 bg-stone-800 rotate-45 border-l border-b border-white/5"></div>
-                <p className="text-xs text-amber-500 font-bold uppercase mb-0.5">Chef's Advice</p>
+                <p className="text-xs text-amber-500 font-bold uppercase mb-0.5">主廚建議</p>
                 <p className="text-sm text-stone-300 italic">"{chefMessage || '選得好不如烤得好！需要什麼建議嗎？'}"</p>
             </div>
             <button onClick={handleAskChef} disabled={loadingAdvice} className={`bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 btn-3d ${loadingAdvice ? 'opacity-50' : ''}`}>
-               {loadingAdvice ? <RotateCcw className="animate-spin" size={14} /> : <Info size={14} />} ASK
+               {loadingAdvice ? <RotateCcw className="animate-spin" size={14} /> : <Info size={14} />} 詢問
             </button>
         </div>
       </div>

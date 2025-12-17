@@ -58,7 +58,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
               烤串英雄
             </h1>
             <div className="text-yellow-200 font-bold tracking-[0.5em] text-sm mt-2 opacity-80 uppercase">
-                Grill Hero
+                最強燒烤
             </div>
             <div className="mt-4 px-4 py-1 bg-white/10 rounded-full border border-white/20 text-xs text-gray-400">
                 策略塔防 x 美味燒烤
@@ -105,7 +105,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
 
         {/* Footer */}
         <div className="absolute bottom-4 text-center text-[10px] text-gray-600">
-           © 2024 Grill Hero Studio. Do not eat screen.
+           © 2024 Grill Hero Studio. 請勿食用螢幕。
         </div>
     </div>
   );

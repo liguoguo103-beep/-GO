@@ -191,7 +191,7 @@ const GameCanvas: React.FC<GameCanvasProps> = ({
     }
     setParticles(prev => [...prev, ...newParticles]);
     setFloatingTexts(prev => [...prev, {
-      id: Math.random().toString(), x: xPercent, y: yPercent - 5, text: "LEVEL UP!", color: "#FACC15", life: 1.5, scale: 1.2
+      id: Math.random().toString(), x: xPercent, y: yPercent - 5, text: "升級!", color: "#FACC15", life: 1.5, scale: 1.2
     }]);
   };
 
@@ -238,7 +238,7 @@ const GameCanvas: React.FC<GameCanvasProps> = ({
       }]);
   };
 
-  // --- Main Game Loop (Same Logic, just keeping it robust) ---
+  // --- Main Game Loop ---
   const updateGame = useCallback((timestamp: number) => {
     if (gameStateRef.current.status !== GameStatus.PLAYING && gameStateRef.current.status !== GameStatus.LEVEL_COMPLETE) {
       lastTickRef.current = timestamp;
@@ -674,7 +674,7 @@ const GameCanvas: React.FC<GameCanvasProps> = ({
                   {comboCount}x
               </div>
               <div className="text-lg font-bold text-white bg-red-600 px-3 py-1 transform skew-x-12 border-2 border-black shadow-[4px_4px_0_rgba(0,0,0,0.5)]">
-                  COMBO!
+                  連擊!
               </div>
           </div>
       )}
@@ -851,7 +851,7 @@ const GameCanvas: React.FC<GameCanvasProps> = ({
                             ? 'bg-gradient-to-br from-orange-500 to-red-600 border-yellow-400 animate-bounce' 
                             : 'bg-gray-800 border-gray-600 opacity-90')}`}
               >
-                 {gameState.isOverheated ? <div className="text-white font-black text-[10px] animate-ping font-display">HELLFIRE</div> : <Flame size={36} className={`mb-1 drop-shadow-md ${gameState.heat >= GAME_Config.MAX_HEAT ? 'text-yellow-300 fill-yellow-300' : 'text-gray-500'}`} />}
+                 {gameState.isOverheated ? <div className="text-white font-black text-[10px] animate-ping font-display">地獄烈火!</div> : <Flame size={36} className={`mb-1 drop-shadow-md ${gameState.heat >= GAME_Config.MAX_HEAT ? 'text-yellow-300 fill-yellow-300' : 'text-gray-500'}`} />}
                  
                  {/* Progress Liquid */}
                  {!gameState.isOverheated && (

@@ -317,21 +317,21 @@ const App: React.FC = () => {
       {/* Pause Menu Overlay */}
       {gameState.status === GameStatus.PAUSED && (
         <div className="absolute z-50 bg-black/80 inset-0 flex flex-col items-center justify-center animate-fade-in backdrop-blur-sm">
-           <h2 className="text-6xl font-black text-white mb-8 tracking-widest drop-shadow-lg font-display">PAUSED</h2>
+           <h2 className="text-6xl font-black text-white mb-8 tracking-widest drop-shadow-lg font-display">暫停</h2>
            
            <div className="flex flex-col gap-6 w-72">
              <button 
                onClick={handleResume}
                className="bg-green-600 hover:bg-green-500 text-white text-xl font-black py-4 px-8 rounded-xl shadow-[0_10px_0_#14532d] active:shadow-[0_0_0] active:translate-y-2.5 transition-all flex items-center justify-center gap-3 border-2 border-green-400"
              >
-               <Play size={28} fill="currentColor" /> RESUME
+               <Play size={28} fill="currentColor" /> 繼續遊戲
              </button>
 
              <button 
                onClick={handleQuitGame}
                className="bg-gray-700 hover:bg-red-600 text-gray-200 hover:text-white text-lg font-bold py-4 px-8 rounded-xl shadow-[0_10px_0_#1f2937] active:shadow-[0_0_0] active:translate-y-2.5 transition-all flex items-center justify-center gap-3 border-2 border-gray-500"
              >
-               <Home size={28} /> MAIN MENU
+               <Home size={28} /> 主選單
              </button>
            </div>
         </div>
@@ -345,36 +345,36 @@ const App: React.FC = () => {
 
            <div className="animate-title-drop relative flex flex-col items-center mb-8">
              <h1 className="text-6xl sm:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-yellow-400 via-orange-500 to-red-600 tracking-tighter drop-shadow-[0_5px_5px_rgba(0,0,0,1)] stroke-white font-display text-center" style={{ WebkitTextStroke: '2px #3d0000' }}>
-               GRILL HERO
+               烤串英雄
              </h1>
              <div className="flex items-center gap-4 mt-2">
                  <div className="h-1 w-12 bg-blue-500"></div>
-                 <span className="text-2xl sm:text-3xl text-blue-400 font-bold tracking-[0.5em] uppercase font-display italic">Ultimate 2.0</span>
+                 <span className="text-2xl sm:text-3xl text-blue-400 font-bold tracking-[0.5em] uppercase font-display italic">終極版 2.0</span>
                  <div className="h-1 w-12 bg-blue-500"></div>
              </div>
            </div>
            
            {/* Map Settings Panel */}
            <div className="bg-black/60 backdrop-blur-md p-6 rounded-2xl border-2 border-white/10 animate-zoom-in w-full max-w-2xl mb-8 shadow-2xl relative" style={{ animationDelay: '0.3s' }}>
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#1a1a1a] px-4 py-1 rounded text-xs font-bold text-gray-400 border border-white/10 uppercase tracking-widest">Map Configuration</div>
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#1a1a1a] px-4 py-1 rounded text-xs font-bold text-gray-400 border border-white/10 uppercase tracking-widest">地圖設定</div>
               
               <div className="flex flex-wrap justify-center gap-8 sm:gap-12 mt-2">
                  {/* Lanes Control */}
                  <div className="flex flex-col items-center">
-                    <span className="text-xs text-gray-400 mb-2 uppercase font-bold flex items-center gap-1"><Grid3X3 size={14}/> Grill Rows</span>
+                    <span className="text-xs text-gray-400 mb-2 uppercase font-bold flex items-center gap-1"><Grid3X3 size={14}/> 烤架列數</span>
                     <div className="flex items-center gap-4 bg-black/80 p-1.5 rounded-xl border border-white/10 shadow-inner">
                         <button onClick={() => setConfigLanes(l => Math.max(3, l - 1))} className="w-10 h-10 flex items-center justify-center bg-stone-700 hover:bg-red-600 rounded-lg text-white transition-colors active:scale-95 border border-white/5"><Minus size={18} /></button>
                         <span className="text-3xl font-mono font-black w-8 text-center text-yellow-400">{configLanes}</span>
                         <button onClick={() => setConfigLanes(l => Math.min(10, l + 1))} className="w-10 h-10 flex items-center justify-center bg-stone-700 hover:bg-green-600 rounded-lg text-white transition-colors active:scale-95 border border-white/5"><Plus size={18} /></button>
                     </div>
                     <div className="text-[10px] text-red-400 mt-2 font-bold bg-red-950/50 px-3 py-1 rounded-full border border-red-900/50 flex items-center gap-1">
-                        <Heart size={10} className="fill-red-500" /> HP: {calculateMaxHp(configLanes)}
+                        <Heart size={10} className="fill-red-500" /> 生命值: {calculateMaxHp(configLanes)}
                     </div>
                  </div>
 
                  {/* Slots Control */}
                  <div className="flex flex-col items-center">
-                    <span className="text-xs text-gray-400 mb-2 uppercase font-bold flex items-center gap-1"><ArrowLeftRight size={14}/> Skewer Length</span>
+                    <span className="text-xs text-gray-400 mb-2 uppercase font-bold flex items-center gap-1"><ArrowLeftRight size={14}/> 烤串長度</span>
                     <div className="flex items-center gap-4 bg-black/80 p-1.5 rounded-xl border border-white/10 shadow-inner">
                         <button onClick={() => setConfigSlots(s => Math.max(15, s - 5))} className="w-10 h-10 flex items-center justify-center bg-stone-700 hover:bg-red-600 rounded-lg text-white transition-colors active:scale-95 border border-white/5"><Minus size={18} /></button>
                         <span className="text-3xl font-mono font-black w-12 text-center text-blue-300">{configSlots}</span>
@@ -391,19 +391,19 @@ const App: React.FC = () => {
              >
                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500"></div>
                <Play fill="currentColor" size={32} className="relative z-10 drop-shadow-md" />
-               <span className="relative z-10 drop-shadow-md">PLAY NOW</span>
+               <span className="relative z-10 drop-shadow-md">開始燒烤</span>
              </button>
              
              <button 
                onClick={() => setShowGlossary(true)}
                className="bg-stone-700 hover:bg-stone-600 text-white text-xl font-bold py-5 px-8 rounded-2xl shadow-[0_10px_0_#292524] active:shadow-[0_0_0] active:translate-y-2.5 transition-all flex items-center gap-2 border-2 border-stone-500"
              >
-               <BookOpen size={24} /> GLOSSARY
+               <BookOpen size={24} /> 圖鑑
              </button>
            </div>
            
            <div className="mt-8 max-w-md mx-auto text-center text-gray-500 text-xs animate-fade-in" style={{ animationDelay: '1s' }}>
-             <p>VERSION 2.0.0 ULTIMATE • GRILL HERO STUDIO</p>
+             <p>版本 2.0.0 終極版 • 烤串英雄工作室</p>
            </div>
         </div>
       )}
@@ -417,15 +417,15 @@ const App: React.FC = () => {
       {gameState.status === GameStatus.REVIVE_OFFER && (
          <div className="absolute z-50 bg-black/95 inset-0 flex flex-col items-center justify-center animate-zoom-in px-4">
              <HeartPulse size={100} className="text-red-500 mb-6 animate-pulse drop-shadow-[0_0_20px_rgba(220,38,38,0.8)]" />
-             <h2 className="text-6xl font-black text-white mb-2 drop-shadow-md font-display uppercase">Defeated</h2>
-             <p className="text-xl text-gray-300 mb-12">The rats have consumed your grill...</p>
+             <h2 className="text-6xl font-black text-white mb-2 drop-shadow-md font-display uppercase">戰敗</h2>
+             <p className="text-xl text-gray-300 mb-12">老鼠吃光了你的烤串...</p>
 
              <div className="flex flex-col gap-6 w-full max-w-sm">
                  <button 
                     onClick={handleReviveAd}
                     className="bg-gradient-to-r from-green-600 to-green-500 hover:brightness-110 text-white text-xl font-bold py-4 px-8 rounded-xl shadow-[0_5px_20px_rgba(22,163,74,0.4)] transform transition hover:scale-105 active:scale-95 flex items-center justify-center gap-3 border border-green-400"
                  >
-                     <Tv size={28} /> WATCH AD TO REVIVE
+                     <Tv size={28} /> 觀看廣告復活
                  </button>
 
                  <button 
@@ -438,7 +438,7 @@ const App: React.FC = () => {
                     `}
                  >
                      <Coins size={24} className={gameState.money >= REVIVE_COST ? "text-yellow-200" : "text-stone-500"} /> 
-                     PAY ${REVIVE_COST}
+                     支付 ${REVIVE_COST}
                  </button>
 
                  <div className="h-px bg-stone-800 my-2 w-full"></div>
@@ -447,7 +447,7 @@ const App: React.FC = () => {
                     onClick={handleGiveUp}
                     className="text-stone-500 hover:text-red-400 font-bold py-2 transition-colors flex items-center justify-center gap-2 active:scale-95 text-sm uppercase tracking-widest"
                  >
-                     <X size={18} /> Accept Defeat
+                     <X size={18} /> 接受失敗
                  </button>
              </div>
          </div>
@@ -456,17 +456,17 @@ const App: React.FC = () => {
       {/* Game Over Screen */}
       {gameState.status === GameStatus.GAME_OVER && (
         <div className="absolute z-50 bg-black/90 inset-0 flex flex-col items-center justify-center animate-zoom-in px-4">
-           <h2 className="text-7xl sm:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-b from-red-500 to-red-900 mb-6 font-display drop-shadow-[0_5px_0_#fff]">GAME OVER</h2>
+           <h2 className="text-7xl sm:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-b from-red-500 to-red-900 mb-6 font-display drop-shadow-[0_5px_0_#fff]">遊戲結束</h2>
            <div className="bg-stone-800/50 p-8 rounded-2xl border border-white/10 text-center mb-10 backdrop-blur-md">
-               <p className="text-stone-400 text-sm uppercase tracking-widest mb-2">Final Score</p>
+               <p className="text-stone-400 text-sm uppercase tracking-widest mb-2">最終分數</p>
                <div className="text-6xl font-black text-yellow-400 font-mono mb-6 drop-shadow-md">{gameState.score}</div>
                <div className="flex gap-8 justify-center">
                    <div className="text-center">
-                       <div className="text-xs text-stone-500 uppercase">Wave</div>
+                       <div className="text-xs text-stone-500 uppercase">波數</div>
                        <div className="text-2xl font-bold text-white">{gameState.wave}</div>
                    </div>
                    <div className="text-center">
-                       <div className="text-xs text-stone-500 uppercase">Money</div>
+                       <div className="text-xs text-stone-500 uppercase">金錢</div>
                        <div className="text-2xl font-bold text-green-400">${gameState.money}</div>
                    </div>
                </div>
@@ -476,7 +476,7 @@ const App: React.FC = () => {
              onClick={startGame}
              className="bg-white hover:bg-gray-200 text-black text-xl font-black py-4 px-12 rounded-full shadow-[0_0_30px_rgba(255,255,255,0.3)] flex items-center gap-3 transform hover:scale-105 active:scale-95 transition"
            >
-             <RotateCcw size={24} /> TRY AGAIN
+             <RotateCcw size={24} /> 再試一次
            </button>
         </div>
       )}
@@ -485,12 +485,12 @@ const App: React.FC = () => {
       {gameState.status === GameStatus.LEVEL_COMPLETE && (
         <div className="absolute z-50 bg-black/90 inset-0 flex flex-col items-center justify-center animate-zoom-in px-4">
            <Trophy size={100} className="mb-6 text-yellow-400 animate-bounce drop-shadow-[0_0_30px_rgba(250,204,21,0.6)]" />
-           <h2 className="text-5xl sm:text-7xl font-black text-yellow-400 mb-4 drop-shadow-md font-display uppercase text-center">Victory!</h2>
-           <p className="text-xl text-white mb-10 font-bold text-center opacity-80">Wave {gameState.wave} Cleared</p>
+           <h2 className="text-5xl sm:text-7xl font-black text-yellow-400 mb-4 drop-shadow-md font-display uppercase text-center">大獲全勝!</h2>
+           <p className="text-xl text-white mb-10 font-bold text-center opacity-80">第 {gameState.wave} 波 清除</p>
            
            <div className="bg-gradient-to-b from-green-900/40 to-green-900/10 p-8 rounded-2xl mb-10 text-center backdrop-blur-sm border border-green-500/30 w-full max-w-sm shadow-xl relative overflow-hidden">
              <div className="absolute inset-0 bg-green-500/5 animate-pulse"></div>
-             <div className="text-sm text-green-300 uppercase tracking-widest font-bold mb-2">Completion Bonus</div>
+             <div className="text-sm text-green-300 uppercase tracking-widest font-bold mb-2">通關獎勵</div>
              <div className="text-5xl font-black text-green-400 mb-2 drop-shadow-sm">+${500 + (gameState.wave * 100)}</div>
            </div>
 
@@ -498,7 +498,7 @@ const App: React.FC = () => {
              onClick={handleNextLevel}
              className="bg-gradient-to-r from-orange-500 to-red-600 hover:brightness-110 text-white text-2xl font-black py-5 px-16 rounded-full shadow-[0_10px_30px_rgba(220,38,38,0.5)] transform transition hover:scale-105 active:scale-95 flex items-center gap-4 group border-4 border-orange-400"
            >
-             NEXT WAVE <ArrowRight size={28} className="group-hover:translate-x-1 transition-transform" />
+             下一波 <ArrowRight size={28} className="group-hover:translate-x-1 transition-transform" />
            </button>
         </div>
       )}
