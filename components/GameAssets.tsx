@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { EnemyType, IngredientType } from '../types';
 
@@ -55,7 +56,21 @@ export const SupremeCornSVG = () => (<svg viewBox="0 0 100 100" className="w-ful
 export const SausageSVG = () => (<svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md"><rect x="30" y="10" width="40" height="80" rx="20" fill="#BE123C" stroke="#881337" strokeWidth="3" transform="rotate(-10 50 50)" /><path d="M40 20 Q45 20 45 70" stroke="white" strokeWidth="4" opacity="0.3" strokeLinecap="round" transform="rotate(-10 50 50)" fill="none" /></svg>);
 export const KingSausageSVG = () => (<svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_10px_rgba(234,179,8,0.5)]"><rect x="25" y="5" width="50" height="90" rx="25" fill="#9F1239" stroke="#FBBF24" strokeWidth="4" transform="rotate(-10 50 50)" /><path d="M40 15 L60 15 L50 5 Z" fill="#FACC15" transform="rotate(-10 50 50)" /><path d="M35 20 Q45 20 45 80" stroke="#FDE047" strokeWidth="5" opacity="0.6" strokeLinecap="round" transform="rotate(-10 50 50)" fill="none" /></svg>);
 export const GodSausageSVG = () => (<svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_15px_rgba(244,114,182,0.8)]"><rect x="30" y="10" width="40" height="80" rx="20" fill="#831843" stroke="#EC4899" strokeWidth="4" transform="rotate(-10 50 50)" className="animate-pulse" /><path d="M40 10 L60 10 L50 90 L30 90 Z" fill="#FBCFE8" opacity="0.3" transform="rotate(-10 50 50)" filter="blur(2px)" /></svg>);
-export const SupremeSausageSVG = () => (<svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_20px_#f59e0b]"><rect x="30" y="10" width="40" height="80" rx="20" fill="#451a03" stroke="#fbbf24" strokeWidth="3" transform="rotate(-10 50 50)" /><path d="M30 10 L70 10 L70 90 L30 90" fill="url(#rainbow)" opacity="0.5" transform="rotate(-10 50 50)" /><path d="M40 20 Q45 20 45 70" stroke="#fffbeb" strokeWidth="4" strokeLinecap="round" transform="rotate(-10 50 50)" fill="none" className="animate-pulse" /></svg>);
+export const SupremeSausageSVG = () => (<svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_20px_#f59e0b]">
+  <defs>
+    <linearGradient id="rainbow" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#fca5a5" />
+        <stop offset="20%" stopColor="#fcd34d" />
+        <stop offset="40%" stopColor="#86efac" />
+        <stop offset="60%" stopColor="#7dd3fc" />
+        <stop offset="80%" stopColor="#a78bfa" />
+        <stop offset="100%" stopColor="#f0abfc" />
+    </linearGradient>
+  </defs>
+  <rect x="30" y="10" width="40" height="80" rx="20" fill="#451a03" stroke="#fbbf24" strokeWidth="3" transform="rotate(-10 50 50)" />
+  <path d="M30 10 L70 10 L70 90 L30 90" fill="url(#rainbow)" opacity="0.5" transform="rotate(-10 50 50)" />
+  <path d="M40 20 Q45 20 45 70" stroke="#fffbeb" strokeWidth="4" strokeLinecap="round" transform="rotate(-10 50 50)" fill="none" className="animate-pulse" />
+</svg>);
 
 // Mushroom
 export const MushroomSVG = () => (<svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md"><rect x="40" y="50" width="20" height="40" rx="5" fill="#E5E7EB" stroke="#9CA3AF" strokeWidth="2" /><path d="M10 50 Q50 0 90 50 Z" fill="#713F12" stroke="#451A03" strokeWidth="3" /><circle cx="30" cy="40" r="5" fill="#D97706" opacity="0.6" /><circle cx="70" cy="35" r="4" fill="#D97706" opacity="0.6" /><circle cx="50" cy="25" r="6" fill="#D97706" opacity="0.6" /></svg>);
@@ -105,107 +120,130 @@ export const KingMarshmallowSVG = () => (<svg viewBox="0 0 100 100" className="w
 export const GodMarshmallowSVG = () => (<svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_20px_#FFF]"><circle cx="50" cy="50" r="40" fill="#FFFFFF" filter="blur(5px)" opacity="0.5" /><rect x="25" y="25" width="50" height="50" rx="10" fill="#FFFFFF" stroke="#60A5FA" strokeWidth="2" /><path d="M10 50 L90 50 M50 10 L50 90" stroke="#93C5FD" strokeWidth="4" className="animate-spin-slow" /><rect x="45" y="40" width="10" height="20" fill="#3B82F6" /><rect x="40" y="45" width="20" height="10" fill="#3B82F6" /></svg>);
 export const SupremeMarshmallowSVG = () => (<svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_20px_#f9a8d4]"><circle cx="50" cy="50" r="35" fill="#fbcfe8" stroke="#f472b6" strokeWidth="3" /><path d="M20 50 L80 50" stroke="#fff" strokeWidth="3" opacity="0.5" /><circle cx="35" cy="40" r="5" fill="#fff" /><circle cx="65" cy="40" r="5" fill="#fff" /><path d="M40 60 Q50 70 60 60" stroke="#ec4899" strokeWidth="2" fill="none" /></svg>);
 
-// Dangerous Series SVG (Food Themed)
-export const DangerousFoodSVG = ({type}: {type: IngredientType}) => {
+// Seasoning Captain (Unique)
+export const SeasoningCaptainSVG = () => (
+  <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_15px_#22d3ee]">
+     {/* Jar Body */}
+     <rect x="25" y="25" width="50" height="60" rx="5" fill="#e0f2fe" stroke="#0ea5e9" strokeWidth="3" />
+     {/* Label */}
+     <rect x="25" y="40" width="50" height="30" fill="#0ea5e9" opacity="0.2" />
+     {/* Lid */}
+     <rect x="20" y="15" width="60" height="10" rx="2" fill="#0284c7" stroke="#0369a1" strokeWidth="2" />
+     {/* Eyes (Cute) handled by wrapper, but add some shine */}
+     <path d="M30 30 L35 30" stroke="#fff" strokeWidth="2" opacity="0.5" />
+     <path d="M70 30 L65 30" stroke="#fff" strokeWidth="2" opacity="0.5" />
+     {/* Sparkles around */}
+     <circle cx="15" cy="20" r="3" fill="#22d3ee" className="animate-ping" style={{animationDelay:'0.3s'}} />
+     <circle cx="85" cy="80" r="2" fill="#22d3ee" className="animate-ping" style={{animationDelay:'0.3s'}} />
+  </svg>
+);
+
+// --- Bonus Delicious Series SVG ---
+export const BonusFoodSVG = ({type}: {type: IngredientType}) => {
   const getFoodStyle = (t: IngredientType) => {
       switch(t) {
-          case IngredientType.D_GHOST_PEPPER: return { color: '#B91C1C', shape: 'pepper' }; // Red wrinkled
-          case IngredientType.D_DURIAN: return { color: '#EAB308', shape: 'spiky_round' }; // Yellow spiky
-          case IngredientType.D_SURSTROMMING: return { color: '#4B5563', shape: 'can' }; // Grey can
-          case IngredientType.D_VOLCANO_CAKE: return { color: '#7F1D1D', shape: 'cake' }; // Dark red cake
-          case IngredientType.D_CENTURY_EGG: return { color: '#1F2937', shape: 'egg' }; // Black egg
-          case IngredientType.D_SEA_URCHIN: return { color: '#000000', shape: 'urchin' }; // Black spikes
-          case IngredientType.D_BLUE_CHEESE: return { color: '#BFDBFE', shape: 'cheese' }; // Blueish white
-          case IngredientType.D_KING_CRAB: return { color: '#DC2626', shape: 'claw' }; // Red Claw
-          case IngredientType.D_NATTO: return { color: '#CA8A04', shape: 'sticky' }; // Brown sticky
-          case IngredientType.D_FUGU: return { color: '#3B82F6', shape: 'fish' }; // Blue puffer
-          case IngredientType.D_SPIRIT_WINE: return { color: '#FFFFFF', shape: 'bottle' }; // White bottle
-          case IngredientType.D_DRY_ICE: return { color: '#E0F2FE', shape: 'ice' }; // Cold white
-          case IngredientType.D_EEL: return { color: '#854D0E', shape: 'long' }; // Brown eel
-          case IngredientType.D_FORTUNE_COOKIE: return { color: '#FDBA74', shape: 'cookie' }; // Beige
-          case IngredientType.D_AGED_BEEF: return { color: '#450A0A', shape: 'meat' }; // Dark meat
-          case IngredientType.D_FISH_BONE: return { color: '#E5E7EB', shape: 'bone' }; // Bone
-          case IngredientType.D_MOLASSES: return { color: '#422006', shape: 'blob' }; // Dark goo
-          case IngredientType.D_BURNT_FOOD: return { color: '#000000', shape: 'mess' }; // Black mess
+          case IngredientType.BONUS_MINI_BUN: return { color: '#FDE047', shape: 'bun' }; 
+          case IngredientType.BONUS_SQUID_BALL: return { color: '#F3F4F6', shape: 'ball_white' }; 
+          case IngredientType.BONUS_PORK_BALL: return { color: '#D1D5DB', shape: 'ball_grey' }; 
+          case IngredientType.BONUS_TEMPURA: return { color: '#D97706', shape: 'tempura' }; 
+          case IngredientType.BONUS_RICE_CAKE: return { color: '#1F2937', shape: 'rice_cake' }; 
+          case IngredientType.BONUS_TOFU_SKIN: return { color: '#FCD34D', shape: 'tofu_skin' }; 
+          case IngredientType.BONUS_GREEN_BEAN: return { color: '#22C55E', shape: 'bean' }; 
+          case IngredientType.BONUS_ENOKI: return { color: '#FEF9C3', shape: 'enoki' }; 
+          case IngredientType.BONUS_CLAM: return { color: '#6B7280', shape: 'clam' }; 
+          case IngredientType.BONUS_BACON_ROLL: return { color: '#EF4444', shape: 'bacon' }; 
           default: return { color: '#6B7280', shape: 'mess' };
       }
   };
 
   const style = getFoodStyle(type);
 
-  if (style.shape === 'pepper') {
+  if (style.shape === 'bun') {
       return (
         <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md">
-           <path d="M50 10 Q80 10 90 40 Q95 70 50 95 Q10 70 15 40 Q20 10 50 10 Z" fill={style.color} stroke="#7F1D1D" strokeWidth="3" />
-           <path d="M30 40 Q50 60 70 40" stroke="#7F1D1D" strokeWidth="2" fill="none" opacity="0.5" />
-           <path d="M50 10 L50 0" stroke="#166534" strokeWidth="4" />
-           <circle cx="35" cy="35" r="2" fill="black" /> <circle cx="65" cy="35" r="2" fill="black" />
-           <path d="M40 50 Q50 45 60 50" stroke="black" strokeWidth="2" fill="none" />
+           <circle cx="50" cy="50" r="35" fill="#FEF9C3" stroke="#FDE047" strokeWidth="2" />
+           <path d="M30 40 Q50 20 70 40" stroke="#FCD34D" strokeWidth="3" fill="none" opacity="0.6" />
         </svg>
       );
   }
-  if (style.shape === 'spiky_round' || style.shape === 'urchin') {
+  if (style.shape === 'ball_white' || style.shape === 'ball_grey') {
       return (
         <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md">
-           <circle cx="50" cy="50" r="35" fill={style.color} stroke={style.color === '#000000' ? '#333' : '#A16207'} strokeWidth="2" />
-           {[0, 45, 90, 135, 180, 225, 270, 315].map(rot => (
-               <path key={rot} d="M50 15 L45 30 L55 30 Z" fill={style.color} stroke="black" strokeWidth="1" transform={`rotate(${rot} 50 50)`} />
-           ))}
-           {style.shape === 'spiky_round' && <circle cx="50" cy="50" r="10" fill="#FEF08A" />}
+           <circle cx="50" cy="50" r="35" fill={style.color} stroke="#9CA3AF" strokeWidth="2" />
+           <path d="M40 30 Q50 40 60 30" fill="none" stroke="black" strokeWidth="1" opacity="0.1" />
+           <circle cx="65" cy="35" r="5" fill="white" opacity="0.5" />
         </svg>
       );
   }
-  if (style.shape === 'can') {
+  if (style.shape === 'tempura') {
       return (
         <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md">
-           <rect x="25" y="30" width="50" height="50" fill="#9CA3AF" stroke="#4B5563" strokeWidth="2" />
-           <path d="M25 30 L75 30 L65 20 L35 20 Z" fill="#D1D5DB" stroke="#4B5563" strokeWidth="2" />
-           <path d="M30 40 L70 40" stroke="#4B5563" strokeWidth="2" opacity="0.5" />
-           {/* Fish bone path */}
-           <path d="M35 60 L65 60 M65 60 L60 55 M65 60 L60 65 M40 60 L40 55 M40 60 L40 65 M50 60 L50 55 M50 60 L50 65" stroke="white" strokeWidth="2" />
-           <circle cx="35" cy="60" r="2" fill="white" />
-           <path d="M20 40 Q10 30 10 10" stroke="#A3E635" strokeWidth="2" fill="none" className="animate-pulse" />
-           <path d="M80 40 Q90 30 90 10" stroke="#A3E635" strokeWidth="2" fill="none" className="animate-pulse" style={{animationDelay: '0.5s'}} />
+           <rect x="25" y="35" width="50" height="30" rx="5" fill="#D97706" stroke="#92400E" strokeWidth="2" />
+           <circle cx="35" cy="50" r="3" fill="#B45309" opacity="0.5" />
+           <circle cx="65" cy="50" r="3" fill="#B45309" opacity="0.5" />
         </svg>
       );
   }
-  if (style.shape === 'cake') {
+  if (style.shape === 'rice_cake') {
       return (
         <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md">
-           <path d="M20 80 L80 80 L70 40 L30 40 Z" fill={style.color} />
-           <path d="M30 40 Q50 30 70 40" fill="#EF4444" />
-           <path d="M30 40 L35 50 M45 40 L45 60 M60 40 L55 55" stroke="#EF4444" strokeWidth="3" />
+           <rect x="30" y="20" width="40" height="60" fill="#1F2937" stroke="#374151" strokeWidth="2" />
+           <rect x="35" y="80" width="30" height="5" fill="#FACC15" /> {/* Peanut powder */}
+           <path d="M30 20 L40 10 L60 10 L70 20" fill="#1F2937" />
         </svg>
       );
   }
-  if (style.shape === 'egg') {
+  if (style.shape === 'tofu_skin') {
       return (
         <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md">
-           <ellipse cx="50" cy="50" rx="30" ry="40" fill={style.color} stroke="#000" strokeWidth="2" />
-           <path d="M40 30 L60 40" stroke="#4B5563" strokeWidth="2" opacity="0.5" />
-           <circle cx="50" cy="50" r="10" fill="#111827" filter="blur(2px)" />
+           <path d="M20 30 Q50 10 80 30 L80 70 Q50 90 20 70 Z" fill="#FCD34D" stroke="#D97706" strokeWidth="2" />
+           <path d="M25 40 Q50 30 75 40" stroke="#D97706" strokeWidth="1" fill="none" />
+           <path d="M25 50 Q50 40 75 50" stroke="#D97706" strokeWidth="1" fill="none" />
+           <path d="M25 60 Q50 50 75 60" stroke="#D97706" strokeWidth="1" fill="none" />
         </svg>
       );
   }
-  if (style.shape === 'cheese') {
+  if (style.shape === 'bean') {
       return (
         <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md">
-           <path d="M20 70 L80 70 L50 20 Z" fill="#FEF9C3" stroke="#CA8A04" strokeWidth="2" />
-           <circle cx="45" cy="50" r="5" fill={style.color} />
-           <circle cx="60" cy="60" r="4" fill={style.color} />
-           <circle cx="50" cy="35" r="3" fill={style.color} />
+           <path d="M45 10 Q30 50 45 90" stroke="#166534" strokeWidth="14" fill="none" />
+           <path d="M45 10 Q30 50 45 90" stroke="#22C55E" strokeWidth="10" fill="none" strokeLinecap="round" />
+           <path d="M55 15 Q70 55 55 95" stroke="#166534" strokeWidth="14" fill="none" />
+           <path d="M55 15 Q70 55 55 95" stroke="#22C55E" strokeWidth="10" fill="none" strokeLinecap="round" />
+        </svg>
+      );
+  }
+  if (style.shape === 'enoki') {
+      return (
+        <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md">
+           <rect x="35" y="60" width="30" height="30" rx="5" fill="#FEF9C3" stroke="#FDE047" strokeWidth="2" />
+           <path d="M40 60 L40 20 M50 60 L50 15 M60 60 L60 20" stroke="#FEF9C3" strokeWidth="4" strokeLinecap="round" />
+           <circle cx="40" cy="20" r="4" fill="#FEF9C3" />
+           <circle cx="50" cy="15" r="4" fill="#FEF9C3" />
+           <circle cx="60" cy="20" r="4" fill="#FEF9C3" />
+        </svg>
+      );
+  }
+  if (style.shape === 'clam') {
+      return (
+        <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md">
+           <path d="M20 50 Q50 10 80 50 Q50 80 20 50" fill="#374151" stroke="#9CA3AF" strokeWidth="2" />
+           <path d="M20 50 Q50 20 80 50" fill="#6B7280" />
+           <path d="M30 50 L70 50" stroke="#111827" strokeWidth="1" opacity="0.3" />
+        </svg>
+      );
+  }
+  if (style.shape === 'bacon') {
+      return (
+        <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md">
+           <rect x="30" y="20" width="40" height="60" rx="5" fill="#EF4444" stroke="#B91C1C" strokeWidth="2" />
+           <path d="M30 30 L70 30 M30 50 L70 50 M30 70 L70 70" stroke="#FECACA" strokeWidth="4" opacity="0.8" />
+           <rect x="45" y="10" width="10" height="80" fill="#FEF08A" /> {/* Enoki inside */}
         </svg>
       );
   }
   
-  // Generic Fallback shape for others (Mystery Meat, etc)
-  return (
-    <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-md">
-       <rect x="25" y="25" width="50" height="50" rx="10" fill={style.color} stroke="black" strokeWidth="2" />
-       {/* Question mark path */}
-       <path d="M40 40 Q40 30 50 30 Q60 30 60 40 Q60 50 50 50 L50 60 M50 70 L50 75" stroke="white" strokeWidth="4" fill="none" />
-    </svg>
-  );
+  return null;
 };
 
 // --- Enemy Renderers ---
@@ -269,16 +307,13 @@ export const BossRatSVG = () => (
 
 // --- Projectile Renderers ---
 export const ProjectileSVG = ({ type }: { type: IngredientType }) => {
-  if (type.startsWith('D_')) {
-      // Food themed projectiles
-      if (type === IngredientType.D_DURIAN) return <svg viewBox="0 0 20 20" className="w-full h-full"><path d="M2 10 L10 2 L18 10 L10 18 Z" fill="#EAB308" stroke="#A16207" strokeWidth="1" /></svg>; // Spike
-      if (type === IngredientType.D_FISH_BONE) return <svg viewBox="0 0 20 20" className="w-full h-full"><path d="M2 10 L18 10 M5 10 L8 5 M5 10 L8 15 M10 10 L13 5 M10 10 L13 15" stroke="#E5E7EB" strokeWidth="2" /></svg>;
-      
-      // Generic Dangerous Projectile
-      return <svg viewBox="0 0 20 20" className="w-full h-full"><circle cx="10" cy="10" r="4" fill="red" className="animate-pulse" /></svg>;
+  if (type.startsWith('BONUS_')) {
+      if (type === IngredientType.BONUS_TEMPURA) return <svg viewBox="0 0 20 20" className="w-full h-full animate-spin"><path d="M10 0 L13 7 L20 10 L13 13 L10 20 L7 13 L0 10 L7 7 Z" fill="#D97706" /></svg>;
+      if (type === IngredientType.BONUS_GREEN_BEAN) return <svg viewBox="0 0 20 20" className="w-full h-full"><rect x="0" y="8" width="20" height="4" fill="#22C55E" className="animate-pulse" /></svg>;
+      return <svg viewBox="0 0 20 20" className="w-full h-full"><circle cx="10" cy="10" r="5" fill="#FDE047" /></svg>;
   }
 
-  if (type.includes('SUPREME')) {
+  if (type.includes('SUPREME') || type === IngredientType.SEASONING_CAPTAIN) {
       return <svg viewBox="0 0 20 20" className="w-full h-full"><path d="M10 0 L13 7 L20 10 L13 13 L10 20 L7 13 L0 10 L7 7 Z" fill="#cffafe" stroke="#06b6d4" strokeWidth="1" className="animate-spin-slow" /></svg>;
   }
 
@@ -311,8 +346,8 @@ export const ProjectileSVG = ({ type }: { type: IngredientType }) => {
 
 // --- Main Ingredient Switch ---
 export const IngredientRenderer = ({ type }: { type: IngredientType }) => {
-  if (type.startsWith('D_')) {
-      return <DangerousFoodSVG type={type} />;
+  if (type.startsWith('BONUS_')) {
+      return <BonusFoodSVG type={type} />;
   }
 
   switch (type) {
@@ -380,6 +415,8 @@ export const IngredientRenderer = ({ type }: { type: IngredientType }) => {
     case IngredientType.KING_MARSHMALLOW: return <KingMarshmallowSVG />;
     case IngredientType.GOD_MARSHMALLOW: return <GodMarshmallowSVG />;
     case IngredientType.SUPREME_MARSHMALLOW: return <SupremeMarshmallowSVG />;
+
+    case IngredientType.SEASONING_CAPTAIN: return <SeasoningCaptainSVG />;
     default: return null;
   }
 };

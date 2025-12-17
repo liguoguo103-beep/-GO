@@ -3,27 +3,47 @@
 <html lang="zh-TW">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#1a0505" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <title>烤串英雄 - Grill Hero</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap');
       body {
         font-family: 'Noto Sans TC', sans-serif;
-        background-color: #1a1a1a;
+        background-color: #1a0505;
         color: #fff;
         overflow: hidden; /* Prevent scrolling on mobile */
+        touch-action: none; /* Prevent browser pinch/zoom behaviors */
+        user-select: none;
+        -webkit-user-select: none;
       }
       /* Custom scrollbar for shop */
       ::-webkit-scrollbar {
-        width: 8px;
+        width: 6px;
+        height: 6px;
       }
       ::-webkit-scrollbar-track {
-        background: #2d2d2d; 
+        background: rgba(45, 45, 45, 0.5); 
       }
       ::-webkit-scrollbar-thumb {
         background: #ef4444; 
         border-radius: 4px;
+      }
+
+      /* Rotate Prompt */
+      #rotate-prompt {
+        display: none;
+      }
+      @media screen and (orientation: portrait) {
+        #rotate-prompt {
+          display: flex;
+        }
+        #root {
+          display: none;
+        }
       }
 
       /* Level Up Animations */
@@ -35,11 +55,6 @@
       
       .animate-level-up {
         animation: levelUpPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      }
-
-      @keyframes floatUp {
-        0% { transform: translateY(0) scale(1); opacity: 1; }
-        100% { transform: translateY(-40px) scale(1.2); opacity: 0; }
       }
 
       /* Attack Recoil Animation */
@@ -84,7 +99,7 @@
         animation: redFlash 0.3s ease-out;
       }
 
-      /* Skill Unlock Animation - Bouncy! */
+      /* Skill Unlock Animation */
       @keyframes skillUnlockPop {
         0% { transform: scale(1); }
         40% { transform: scale(1.4); color: #60A5FA; text-shadow: 0 0 10px rgba(96, 165, 250, 0.8); }
@@ -110,7 +125,7 @@
         animation: fireFlicker 4s infinite ease-in-out;
       }
 
-      /* Running Animation for Loading Screen */
+      /* Running Animation */
       @keyframes running {
         0% { transform: translateY(0) rotate(5deg); }
         25% { transform: translateY(-10px) rotate(0deg); }
@@ -168,6 +183,17 @@
 </script>
 </head>
   <body>
+    <div id="rotate-prompt" class="fixed inset-0 bg-[#1a0505] z-[9999] flex flex-col items-center justify-center text-center p-8">
+       <div class="animate-bounce mb-8 text-orange-500">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+             <path d="M12 3a9 9 0 1 0 9 9" />
+             <path d="M12 3v6" />
+             <path d="M16 7l-4-4-4 4" />
+          </svg>
+       </div>
+       <h2 class="text-2xl font-bold text-white mb-2">請旋轉您的裝置</h2>
+       <p class="text-gray-400">為了最佳的燒烤體驗，<br/>請使用橫向模式遊玩《烤串英雄》。</p>
+    </div>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>

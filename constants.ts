@@ -3,15 +3,33 @@ import { IngredientType, IngredientStats, EnemyType, Skill } from './types';
 
 export const GAME_Config = {
   FPS: 60,
-  DEFAULT_LANES: 5, // Changed from static LANES
-  DEFAULT_SLOTS_PER_LANE: 20, // Changed from static SLOTS
-  PLAYER_MAX_HP: 20, // Default value (will be overridden by dynamic logic based on lanes)
-  STARTING_MONEY: 200, 
+  DEFAULT_LANES: 5, 
+  DEFAULT_SLOTS_PER_LANE: 20, 
+  PLAYER_MAX_HP: 20, 
+  STARTING_MONEY: 1000, 
   LANE_LENGTH_PIXELS: 1000, 
   AUTO_LEVEL_INTERVAL: 30000, // 30 seconds
   MAX_LEVEL: 100,
-  SKILL_POINT_INTERVAL: 5, // Gain 1 SP every 5 levels
-  SKILL_RESET_COST: 500
+  SKILL_POINT_INTERVAL: 5, 
+  SKILL_RESET_COST: 500,
+  MAX_HEAT: 100,
+  HEAT_PER_KILL: 5,
+  OVERHEAT_DURATION: 8000, // 8 seconds
+  OVERHEAT_SPEED_BOOST: 0.5 // Multiplier (0.5 means 2x speed)
+};
+
+export const ENEMY_STATS: Record<EnemyType, { hp: number; speed: number; damage: number; money: number; playerDamage: number }> = {
+  [EnemyType.RAT]: { hp: 40, speed: 0.08, damage: 10, money: 10, playerDamage: 1 },
+  [EnemyType.NINJA_RAT]: { hp: 30, speed: 0.18, damage: 15, money: 20, playerDamage: 2 },
+  [EnemyType.BOMB_RAT]: { hp: 80, speed: 0.05, damage: 50, money: 30, playerDamage: 5 }, // High player damage
+  [EnemyType.MAMA_RAT]: { hp: 120, speed: 0.04, damage: 20, money: 40, playerDamage: 3 },
+  [EnemyType.BABY_RAT]: { hp: 15, speed: 0.12, damage: 5, money: 5, playerDamage: 1 },
+  [EnemyType.SHAMAN_RAT]: { hp: 50, speed: 0.05, damage: 0, money: 40, playerDamage: 2 }, // No damage, stuns
+  [EnemyType.SUMMONER_RAT]: { hp: 90, speed: 0.03, damage: 10, money: 60, playerDamage: 3 },
+  [EnemyType.GHOST_RAT]: { hp: 45, speed: 0.07, damage: 12, money: 45, playerDamage: 2 }, // Immune periodically
+  [EnemyType.HEALER_RAT]: { hp: 70, speed: 0.04, damage: 5, money: 50, playerDamage: 2 }, // Heals others
+  // BOSS
+  [EnemyType.BOSS_SUPER_RAT]: { hp: 10000, speed: 0.02, damage: 9999, money: 1000, playerDamage: 20 }, // Instakills ingredients
 };
 
 export const INGREDIENT_STATS: Record<IngredientType, IngredientStats> = {
@@ -36,7 +54,7 @@ export const INGREDIENT_STATS: Record<IngredientType, IngredientStats> = {
   [IngredientType.KING_GARLIC]: { name: '王者金蒜', description: '【王者】堅不可摧的黃金盾。', cost: 120, damage: 0, attackSpeed: 0, hp: 1200, maxHp: 1200, range: 0 },
   [IngredientType.KING_CORN]: { name: '王者金玉米', description: '【王者】發射黃金玉米粒，傷害更高。', cost: 230, damage: 40, attackSpeed: 1400, hp: 200, maxHp: 200, range: 60 },
   [IngredientType.KING_SAUSAGE]: { name: '王者熱狗', description: '【王者】更粗的雷射，貫穿一切。', cost: 300, damage: 45, attackSpeed: 1600, hp: 250, maxHp: 250, range: 100 },
-  [IngredientType.KING_MUSHROOM]: { name: '王者松露', description: '【王者】昂貴的爆炸，範圍更廣。', cost: 280, damage: 75, attackSpeed: 1800, hp: 200, maxHp: 200, range: 100 },
+  [IngredientType.KING_MUSHROOM]: { name: '王者松露', description: '【王者】昂貴的爆炸，範圍更廣。', cost: 280, damage: 75, attackSpeed: 1800, hp: 200, maxHp: 100, range: 100 },
   [IngredientType.KING_ONION]: { name: '王者紫洋蔥', description: '【王者】強烈氣味，緩速 70%。', cost: 160, damage: 0, attackSpeed: 0, hp: 400, maxHp: 400, range: 0 },
   [IngredientType.KING_GREEN_PEPPER]: { name: '王者翡翠椒', description: '【王者】反彈 40 點傷害。', cost: 600, damage: 40, attackSpeed: 0, hp: 900, maxHp: 900, range: 0 },
   [IngredientType.KING_SHRIMP]: { name: '王者龍蝦', description: '【王者】強大水壓，擊退距離加倍。', cost: 250, damage: 30, attackSpeed: 1300, hp: 220, maxHp: 220, range: 100 },
@@ -75,40 +93,20 @@ export const INGREDIENT_STATS: Record<IngredientType, IngredientStats> = {
   [IngredientType.SUPREME_PINEAPPLE]:    { name: '極致·黃金鳳梨', description: '【美味至極】點石成金。每2秒生產 $300。', cost: 2000, damage: 0, attackSpeed: 2000, hp: 1000, maxHp: 1000, range: 0 },
   [IngredientType.SUPREME_MARSHMALLOW]:  { name: '極致·馬卡龍', description: '【美味至極】少女的酥胸。瞬間治癒全隊並無敵1秒。', cost: 2000, damage: 0, attackSpeed: 2000, hp: 1000, maxHp: 1000, range: 0 },
 
-  // --- Dangerous Series (Food Themed) ---
-  [IngredientType.D_GHOST_PEPPER]:   { name: '死神魔鬼椒', description: '【危險】辣到噴火。灼燒敵人與相鄰食材。', cost: 1200, damage: 300, attackSpeed: 800, hp: 3000, maxHp: 3000, range: 100, friendlyFire: 50 },
-  [IngredientType.D_DURIAN]:         { name: '刺殼榴槤', description: '【危險】臭味爆炸。尖刺誤傷相鄰。', cost: 1000, damage: 800, attackSpeed: 2000, hp: 3500, maxHp: 3500, range: 100, friendlyFire: 100 },
-  [IngredientType.D_SURSTROMMING]:   { name: '鯡魚罐頭', description: '【危險】生化武器。腐蝕性臭氣。', cost: 900, damage: 150, attackSpeed: 500, hp: 2500, maxHp: 2500, range: 80, friendlyFire: 30 },
-  [IngredientType.D_VOLCANO_CAKE]:   { name: '岩漿巧克力', description: '【危險】流淌的岩漿。反傷極高。', cost: 1500, damage: 200, attackSpeed: 0, hp: 5000, maxHp: 5000, range: 0, friendlyFire: 60 },
-  [IngredientType.D_CENTURY_EGG]:    { name: '千年皮蛋', description: '【危險】來自虛空的美味。吞噬一切。', cost: 2000, damage: 1000, attackSpeed: 3000, hp: 4000, maxHp: 4000, range: 100, friendlyFire: 150 },
-  [IngredientType.D_SEA_URCHIN]:     { name: '深海海膽', description: '【危險】滿身尖刺。近戰絞肉機。', cost: 1100, damage: 400, attackSpeed: 600, hp: 3500, maxHp: 3500, range: 20, friendlyFire: 40 },
-  [IngredientType.D_BLUE_CHEESE]:    { name: '藍紋起司', description: '【危險】黴菌擴散。使敵人中毒。', cost: 950, damage: 100, attackSpeed: 300, hp: 2000, maxHp: 2000, range: 100, friendlyFire: 25 },
-  [IngredientType.D_KING_CRAB]:      { name: '帝王蟹鉗', description: '【危險】巨鉗橫掃。無差別切割。', cost: 1300, damage: 250, attackSpeed: 200, hp: 3000, maxHp: 3000, range: 30, friendlyFire: 80 },
-  [IngredientType.D_NATTO]:          { name: '黏稠納豆', description: '【危險】絲絲相連。全場緩速，但很黏人。', cost: 1400, damage: 50, attackSpeed: 1000, hp: 4500, maxHp: 4500, range: 100, friendlyFire: 35 },
-  [IngredientType.D_FUGU]:           { name: '劇毒河豚', description: '【危險】致命毒素。秒殺弱小敵人。', cost: 1600, damage: 600, attackSpeed: 1500, hp: 2000, maxHp: 2000, range: 100, friendlyFire: 70 },
-  [IngredientType.D_SPIRIT_WINE]:    { name: '58度高粱', description: '【危險】易燃液體。點燃全場。', cost: 1800, damage: 400, attackSpeed: 800, hp: 2500, maxHp: 2500, range: 100, friendlyFire: 55 },
-  [IngredientType.D_DRY_ICE]:        { name: '乾冰生魚片', description: '【危險】絕對零度。凍結周圍。', cost: 1350, damage: 200, attackSpeed: 2000, hp: 3000, maxHp: 3000, range: 80, friendlyFire: 65 },
-  [IngredientType.D_EEL]:            { name: '蒲燒電鰻', description: '【危險】高壓電擊。連鎖閃電傷害。', cost: 2500, damage: 1200, attackSpeed: 2500, hp: 4000, maxHp: 4000, range: 100, friendlyFire: 200 },
-  [IngredientType.D_FORTUNE_COOKIE]: { name: '厄運餅乾', description: '【危險】未知的紙條。隨機造成巨大傷害。', cost: 2200, damage: 2000, attackSpeed: 4000, hp: 5000, maxHp: 5000, range: 100, friendlyFire: 100 },
-  [IngredientType.D_AGED_BEEF]:      { name: '發霉熟成牛', description: '【危險】看起來像壞掉。極高的血量與屍毒。', cost: 800, damage: 300, attackSpeed: 1000, hp: 4000, maxHp: 4000, range: 50, friendlyFire: 40 },
-  [IngredientType.D_FISH_BONE]:      { name: '喉梗魚刺', description: '【危險】鋒利無比。極高爆擊率。', cost: 1150, damage: 600, attackSpeed: 600, hp: 1000, maxHp: 1000, range: 100, friendlyFire: 90 },
-  [IngredientType.D_MOLASSES]:       { name: '濃稠糖蜜', description: '【危險】甜蜜陷阱。使敵人永久緩速。', cost: 1700, damage: 350, attackSpeed: 1000, hp: 4500, maxHp: 4500, range: 100, friendlyFire: 60 },
-  [IngredientType.D_BURNT_FOOD]:     { name: '黑暗料理', description: '【危險】無法辨識的焦炭。毀滅性打擊。', cost: 3000, damage: 5000, attackSpeed: 5000, hp: 6000, maxHp: 6000, range: 100, friendlyFire: 300 },
-  [IngredientType.D_MYSTERY_MEAT]:   { name: '謎之肉', description: '【危險】成分不明。數值隨機波動。', cost: 1500, damage: 500, attackSpeed: 500, hp: 3000, maxHp: 3000, range: 100, friendlyFire: 50 },
-};
+  // --- SPECIAL UNIQUE ---
+  [IngredientType.SEASONING_CAPTAIN]:    { name: '調味料隊長', description: '【唯一】戰場指揮官。噴灑神秘香料，升級友軍或削減敵人一半生命。', cost: 9999, damage: 0, attackSpeed: 800, hp: 3000, maxHp: 3000, range: 0 },
 
-export const ENEMY_STATS: Record<EnemyType, { hp: number; speed: number; damage: number; money: number; playerDamage: number }> = {
-  [EnemyType.RAT]: { hp: 40, speed: 0.08, damage: 10, money: 10, playerDamage: 1 },
-  [EnemyType.NINJA_RAT]: { hp: 30, speed: 0.18, damage: 15, money: 20, playerDamage: 2 },
-  [EnemyType.BOMB_RAT]: { hp: 80, speed: 0.05, damage: 50, money: 30, playerDamage: 5 }, // High player damage
-  [EnemyType.MAMA_RAT]: { hp: 120, speed: 0.04, damage: 20, money: 40, playerDamage: 3 },
-  [EnemyType.BABY_RAT]: { hp: 15, speed: 0.12, damage: 5, money: 5, playerDamage: 1 },
-  [EnemyType.SHAMAN_RAT]: { hp: 50, speed: 0.05, damage: 0, money: 40, playerDamage: 2 }, // No damage, stuns
-  [EnemyType.SUMMONER_RAT]: { hp: 90, speed: 0.03, damage: 10, money: 60, playerDamage: 3 },
-  [EnemyType.GHOST_RAT]: { hp: 45, speed: 0.07, damage: 12, money: 45, playerDamage: 2 }, // Immune periodically
-  [EnemyType.HEALER_RAT]: { hp: 70, speed: 0.04, damage: 5, money: 50, playerDamage: 2 }, // Heals others
-  // BOSS
-  [EnemyType.BOSS_SUPER_RAT]: { hp: 10000, speed: 0.02, damage: 9999, money: 1000, playerDamage: 20 }, // Instakills ingredients
+  // --- Bonus Delicious Series (Friendly Synergy) ---
+  [IngredientType.BONUS_MINI_BUN]:   { name: '煉乳小饅頭', description: '【美味加分】高速連射。若同排有極致食材，變身加特林。', cost: 400, damage: 20, attackSpeed: 300, hp: 300, maxHp: 300, range: 100 },
+  [IngredientType.BONUS_SQUID_BALL]: { name: '澎湖花枝丸', description: '【美味加分】彈跳攻擊，一次打三個。', cost: 450, damage: 45, attackSpeed: 1000, hp: 400, maxHp: 400, range: 100 },
+  [IngredientType.BONUS_PORK_BALL]:  { name: '新竹貢丸', description: '【美味加分】紮實的口感，附帶強力擊退。', cost: 500, damage: 60, attackSpeed: 1200, hp: 500, maxHp: 500, range: 100 },
+  [IngredientType.BONUS_TEMPURA]:    { name: '基隆甜不辣', description: '【美味加分】發射三枚飛鏢。', cost: 480, damage: 35, attackSpeed: 900, hp: 450, maxHp: 450, range: 80 },
+  [IngredientType.BONUS_RICE_CAKE]:  { name: '花生豬血糕', description: '【美味加分】厚實軟Q，超強肉盾。', cost: 420, damage: 0, attackSpeed: 0, hp: 2000, maxHp: 2000, range: 0 },
+  [IngredientType.BONUS_TOFU_SKIN]:  { name: '酥炸豆皮', description: '【美味加分】酥脆的聲音，提升左右攻速 20%。', cost: 550, damage: 0, attackSpeed: 0, hp: 600, maxHp: 600, range: 0 },
+  [IngredientType.BONUS_GREEN_BEAN]: { name: '鹽酥四季豆', description: '【美味加分】直線穿透攻擊。', cost: 460, damage: 40, attackSpeed: 1100, hp: 350, maxHp: 350, range: 100 },
+  [IngredientType.BONUS_ENOKI]:      { name: '奶油金針菇', description: '【美味加分】難以咬斷，纏繞敵人造成緩速。', cost: 520, damage: 15, attackSpeed: 500, hp: 400, maxHp: 400, range: 100 },
+  [IngredientType.BONUS_CLAM]:       { name: '酒蒸蛤蜊', description: '【美味加分】噴射高溫蒸氣，範圍傷害。', cost: 600, damage: 70, attackSpeed: 1500, hp: 500, maxHp: 500, range: 80 },
+  [IngredientType.BONUS_BACON_ROLL]: { name: '金針培根捲', description: '【美味加分】油脂爆發，高單體傷害。', cost: 650, damage: 150, attackSpeed: 1300, hp: 550, maxHp: 550, range: 100 },
 };
 
 export const UPGRADE_MULTIPLIER = 1.5; 
@@ -134,16 +132,12 @@ export const SKILL_TREE: Partial<Record<IngredientType, Skill[]>> = {
   ],
   [IngredientType.GARLIC]: [
     { id: 'GARLIC_REGEN', name: '自我修復', description: '每秒回復 2% 最大生命', unlockLevel: 5, tier: 1, cost: 1 },
+    { id: 'GARLIC_TAUNT', name: '嘲諷', description: '吸引附近敵人攻擊', unlockLevel: 10, tier: 2, cost: 2 },
     { id: 'GARLIC_THORNS', name: '荊棘護甲', description: '反彈 20% 近戰傷害', unlockLevel: 15, tier: 2, cost: 1 },
   ],
   [IngredientType.PINEAPPLE]: [
     { id: 'PINEAPPLE_FURY', name: '禁忌風味', description: '【隱藏】當左右相鄰分別是牛肉與香腸時，覺醒攻擊能力，攻速提升 500% 並發射披薩飛彈', unlockLevel: 20, tier: 3, cost: 3, hidden: true },
   ],
-  // Dangerous Series Generic Skill Tree (Applied to all D_ types)
-  [IngredientType.D_GHOST_PEPPER]: [
-     { id: 'HAZARD_STABLE', name: '穩定劑', description: '減少 50% 對友軍的誤傷。', unlockLevel: 5, tier: 1, cost: 2 },
-     { id: 'HAZARD_MELT', name: '過度烹飪', description: '攻擊力 +50%，但對友軍誤傷也 +50%。', unlockLevel: 10, tier: 2, cost: 2 },
-  ]
 };
 
 // Helper to get skills (including generics for types not explicitly defined above)
@@ -152,18 +146,18 @@ export const getSkillsForType = (type: IngredientType): Skill[] => {
   if (specificSkills) return specificSkills;
 
   // Supreme Series Fallback
-  if (type.startsWith('SUPREME_')) {
+  if (type.startsWith('SUPREME_') || type === IngredientType.SEASONING_CAPTAIN) {
       return [
          { id: 'SUPREME_AURA', name: '極致光環', description: '相鄰食材傷害 +20%', unlockLevel: 5, tier: 1, cost: 2 },
          { id: 'SUPREME_OVERLOAD', name: '美味爆發', description: '攻擊有 30% 機率造成 3倍 傷害', unlockLevel: 15, tier: 2, cost: 3 },
       ];
   }
 
-  // Dangerous Series Fallback
-  if (type.startsWith('D_')) {
+  // Bonus Series Fallback
+  if (type.startsWith('BONUS_')) {
       return [
-         { id: 'HAZARD_STABLE', name: '風味中和', description: '減少 30% 對友軍的誤傷。', unlockLevel: 5, tier: 1, cost: 2 },
-         { id: 'HAZARD_OVERLOAD', name: '極致提味', description: '攻擊力 +40%，最大生命 +20%。', unlockLevel: 15, tier: 2, cost: 3 },
+         { id: 'BONUS_SYNERGY_UP', name: '美味加倍', description: '若與極致食材同排，額外提升 20% 傷害。', unlockLevel: 5, tier: 1, cost: 2 },
+         { id: 'BONUS_DISCOUNT', name: '銅板美食', description: '升級費用減少 15%。', unlockLevel: 10, tier: 2, cost: 2 },
       ];
   }
 

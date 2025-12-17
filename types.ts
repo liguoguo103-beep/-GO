@@ -1,12 +1,12 @@
 
 export enum GameStatus {
-  LOADING = 'LOADING', // New state
+  LOADING = 'LOADING',
   MENU = 'MENU',
   PLAYING = 'PLAYING',
   GAME_OVER = 'GAME_OVER',
   LEVEL_COMPLETE = 'LEVEL_COMPLETE',
   PAUSED = 'PAUSED',
-  REVIVE_OFFER = 'REVIVE_OFFER' // New: Player died, offering revive
+  REVIVE_OFFER = 'REVIVE_OFFER'
 }
 
 export enum IngredientType {
@@ -69,26 +69,20 @@ export enum IngredientType {
   SUPREME_PINEAPPLE = 'SUPREME_PINEAPPLE',
   SUPREME_MARSHMALLOW = 'SUPREME_MARSHMALLOW',
 
-  // --- Dangerous Series (Food Themed Hazards) ---
-  D_GHOST_PEPPER = 'D_GHOST_PEPPER', // 魔鬼椒 (Was Uranium) - Radiates heat
-  D_DURIAN = 'D_DURIAN',             // 榴槤 (Was TNT) - Explosion/Spikes
-  D_SURSTROMMING = 'D_SURSTROMMING', // 鯡魚罐頭 (Was Acid Slime) - Bio/Gas
-  D_VOLCANO_CAKE = 'D_VOLCANO_CAKE', // 岩漿蛋糕 (Was Lava Rock) - Heat/Reflect
-  D_CENTURY_EGG = 'D_CENTURY_EGG',   // 千年皮蛋 (Was Void Orb) - Void/Dark
-  D_SEA_URCHIN = 'D_SEA_URCHIN',     // 海膽 (Was Spike Ball) - Spikes
-  D_BLUE_CHEESE = 'D_BLUE_CHEESE',   // 藍紋起司 (Was Bio Hazard) - Mold/Poison
-  D_KING_CRAB = 'D_KING_CRAB',       // 帝王蟹鉗 (Was Chainsaw) - Melee
-  D_NATTO = 'D_NATTO',               // 黏稠納豆 (Was Poison Ivy) - Slow/Sticky
-  D_FUGU = 'D_FUGU',                 // 河豚 (Was Fugu Toxin) - Poison
-  D_SPIRIT_WINE = 'D_SPIRIT_WINE',   // 高粱烈酒 (Was Ghost Fire) - Fire
-  D_DRY_ICE = 'D_DRY_ICE',           // 乾冰生魚片 (Was Liquid Nitro) - Freeze
-  D_EEL = 'D_EEL',                   // 烤電鰻 (Was Plasma Core) - Lightning
-  D_FORTUNE_COOKIE = 'D_FORTUNE_COOKIE', // 厄運餅乾 (Was Cursed Doll) - Random
-  D_AGED_BEEF = 'D_AGED_BEEF',       // 乾式熟成 (Was Rotten Flesh) - Rot
-  D_FISH_BONE = 'D_FISH_BONE',       // 魚刺 (Was Glass Shard) - Sharp
-  D_MOLASSES = 'D_MOLASSES',         // 濃稠糖蜜 (Was Mercury) - Slow/Heavy
-  D_BURNT_FOOD = 'D_BURNT_FOOD',     // 黑暗料理 (Was Dark Matter) - Destruction
-  D_MYSTERY_MEAT = 'D_MYSTERY_MEAT'  // 謎之肉 (Was Unknown X) - Random
+  // --- SPECIAL UNIQUE ---
+  SEASONING_CAPTAIN = 'SEASONING_CAPTAIN', // 調味料隊長
+
+  // --- Bonus Delicious Series (Friendly Synergy) ---
+  BONUS_MINI_BUN = 'BONUS_MINI_BUN',       // 小饅頭 (Rapid Fire)
+  BONUS_SQUID_BALL = 'BONUS_SQUID_BALL',   // 花枝丸 (Bounce)
+  BONUS_PORK_BALL = 'BONUS_PORK_BALL',     // 貢丸 (Knockback)
+  BONUS_TEMPURA = 'BONUS_TEMPURA',         // 甜不辣 (Spread)
+  BONUS_RICE_CAKE = 'BONUS_RICE_CAKE',     // 豬血糕 (Tank)
+  BONUS_TOFU_SKIN = 'BONUS_TOFU_SKIN',     // 豆皮 (Buff)
+  BONUS_GREEN_BEAN = 'BONUS_GREEN_BEAN',   // 四季豆 (Pierce)
+  BONUS_ENOKI = 'BONUS_ENOKI',             // 金針菇 (Slow/Tangle)
+  BONUS_CLAM = 'BONUS_CLAM',               // 蛤蜊 (Splash)
+  BONUS_BACON_ROLL = 'BONUS_BACON_ROLL'    // 培根捲 (High Damage)
 }
 
 export enum EnemyType {
@@ -101,7 +95,7 @@ export enum EnemyType {
   SUMMONER_RAT = 'SUMMONER_RAT',
   GHOST_RAT = 'GHOST_RAT',   
   HEALER_RAT = 'HEALER_RAT',
-  BOSS_SUPER_RAT = 'BOSS_SUPER_RAT' // The Counter to Dangerous ingredients
+  BOSS_SUPER_RAT = 'BOSS_SUPER_RAT'
 }
 
 export interface IngredientStats {
@@ -113,18 +107,18 @@ export interface IngredientStats {
   cost: number;
   name: string;
   description: string;
-  friendlyFire?: number; // Damage per second to neighbors
+  // friendlyFire removed
 }
 
 export interface Skill {
   id: string;
   name: string;
   description: string;
-  unlockLevel: number; // Level required to unlock
-  tier: number; // 1, 2, 3... used for UI grouping
-  cost: number; // Skill Points cost
+  unlockLevel: number; 
+  tier: number; 
+  cost: number; 
   icon?: string;
-  hidden?: boolean; // New: If true, logic might hide it until unlocked
+  hidden?: boolean; 
 }
 
 export interface Ingredient {
@@ -132,18 +126,18 @@ export interface Ingredient {
   type: IngredientType;
   level: number;
   lastAttackTime: number;
-  lastAutoLevelTime: number; // For auto-leveling every 60s
+  lastAutoLevelTime: number; 
   hp: number;
   maxHp: number;
-  selectedSkills: string[]; // List of Skill IDs that are active
-  availableSkillPoints: number; // Unspent skill points
-  stunnedUntil?: number; // If set and > currentTime, ingredient cannot attack
+  selectedSkills: string[]; 
+  availableSkillPoints: number; 
+  stunnedUntil?: number; 
 }
 
 export interface Slot {
   id: string;
   laneIndex: number;
-  slotIndex: number; // 0 is closest to handle, 4 is tip
+  slotIndex: number; 
   ingredient: Ingredient | null;
 }
 
@@ -151,7 +145,7 @@ export interface Enemy {
   id: string;
   type: EnemyType;
   laneIndex: number;
-  x: number; // 0 to 100 percentage of lane
+  x: number; 
   hp: number;
   maxHp: number;
   speed: number;
@@ -159,13 +153,11 @@ export interface Enemy {
   attackSpeed: number;
   lastAttackTime: number;
   isAttacking: boolean;
-  // Status effects
   slowed?: boolean;
-  // Ghost Rat specific
   isPhasing?: boolean; 
-  phaseOffset?: number; // To desync ghosts
-  // Healer Rat specific
+  phaseOffset?: number; 
   healCooldown?: number;
+  lastHitTime?: number; // For visual red flash
 }
 
 export interface Projectile {
@@ -175,11 +167,11 @@ export interface Projectile {
   damage: number;
   speed: number;
   visualType: IngredientType;
-  pierce: number; // Number of enemies it can hit before disappearing
-  hitIds: string[]; // Track which enemies have been hit
-  knockback?: number; // Distance to push back
-  isSplash?: boolean; // Does it explode on impact?
-  isCrit?: boolean; // Visual effect for crit
+  pierce: number; 
+  hitIds: string[]; 
+  knockback?: number; 
+  isSplash?: boolean; 
+  isCrit?: boolean; 
 }
 
 export interface MapConfig {
@@ -192,7 +184,10 @@ export interface GameState {
   money: number;
   score: number;
   wave: number;
-  hp: number; // Player HP (skewers integrity)
+  hp: number;
   maxHp: number;
-  mapConfig: MapConfig; // Added map config
+  heat: number; // 0 - 100
+  isOverheated: boolean;
+  overheatEndTime: number;
+  mapConfig: MapConfig;
 }

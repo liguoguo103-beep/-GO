@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { BeefSVG, KingBeefSVG } from './GameAssets';
 import { Flame } from 'lucide-react';

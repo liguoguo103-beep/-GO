@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { IngredientType, Slot, GameState, Ingredient, Skill } from '../types';
 import { INGREDIENT_STATS, UPGRADE_MULTIPLIER, STAT_MULTIPLIER, getSkillsForType, GAME_Config } from '../constants';
 import { getChefAdvice } from '../services/geminiService';
-import { ChefHat, Info, X, Zap, Utensils, ShoppingBag, Sprout, Lock, Check, RotateCcw, Radiation, Gem } from 'lucide-react';
+import { ChefHat, Info, X, Zap, Utensils, ShoppingBag, Sprout, Lock, Check, RotateCcw, Radiation, Gem, Sword, Heart, Clock, Target, ArrowRight, ShieldCheck, ArrowUp, Star } from 'lucide-react';
 import { IngredientRenderer } from './GameAssets';
 import { audioService } from '../services/audioService';
 
@@ -21,7 +21,7 @@ interface UpgradeMenuProps {
 const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBuy, onUpgrade, onSell, onClose, onSelectSkill, onResetSkills }) => {
   const [chefMessage, setChefMessage] = useState<string>("");
   const [loadingAdvice, setLoadingAdvice] = useState(false);
-  const [filter, setFilter] = useState<'ALL' | 'BASIC' | 'KING' | 'GOD' | 'SUPREME' | 'DANGEROUS'>('ALL');
+  const [filter, setFilter] = useState<'ALL' | 'BASIC' | 'KING' | 'GOD' | 'SUPREME' | 'BONUS'>('ALL');
   const [viewMode, setViewMode] = useState<'STATS' | 'SKILLS'>('STATS');
   const [justUnlockedSkillId, setJustUnlockedSkillId] = useState<string | null>(null);
 
@@ -42,23 +42,26 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
     // Filter logic to help user find items
     const allTypes = Object.values(IngredientType);
     const filteredTypes = allTypes.filter(type => {
+      // Exclude special unique types like Seasoning Captain from shop
+      if (type === IngredientType.SEASONING_CAPTAIN) return false;
+
       const isKing = type.includes('KING_');
       const isGod = type.includes('GOD_');
       const isSupreme = type.includes('SUPREME_');
-      const isDangerous = type.startsWith('D_');
+      const isBonus = type.startsWith('BONUS_');
 
-      if (filter === 'BASIC') return !isKing && !isGod && !isSupreme && !isDangerous;
+      if (filter === 'BASIC') return !isKing && !isGod && !isSupreme && !isBonus;
       if (filter === 'KING') return isKing;
       if (filter === 'GOD') return isGod;
       if (filter === 'SUPREME') return isSupreme;
-      if (filter === 'DANGEROUS') return isDangerous;
+      if (filter === 'BONUS') return isBonus;
       return true;
     });
 
     return (
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col w-full">
          {/* Filter Tabs */}
-         <div className="flex gap-2 mb-2 overflow-x-auto pb-1">
+         <div className="flex gap-2 mb-2 overflow-x-auto pb-1 shrink-0">
             <button 
               onClick={() => setFilter('ALL')}
               className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap transition-colors ${filter === 'ALL' ? 'bg-yellow-500 text-black' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'}`}
@@ -90,15 +93,15 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
               <Gem size={12} /> 美味至極
             </button>
             <button 
-              onClick={() => setFilter('DANGEROUS')}
-              className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap transition-colors flex items-center gap-1 ${filter === 'DANGEROUS' ? 'bg-purple-600 text-white shadow-[0_0_10px_rgba(147,51,234,0.6)]' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'}`}
+              onClick={() => setFilter('BONUS')}
+              className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap transition-colors flex items-center gap-1 ${filter === 'BONUS' ? 'bg-pink-500 text-white shadow-[0_0_10px_rgba(236,72,153,0.6)]' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'}`}
             >
-              <Radiation size={12} /> 危險
+              <Star size={12} /> 美味加分
             </button>
          </div>
 
-         {/* Scrollable Grid */}
-         <div className="flex-1 overflow-y-auto pr-2 min-h-[250px] max-h-[300px]">
+         {/* Scrollable Grid - Auto height up to 55vh, then scroll */}
+         <div className="overflow-y-auto pr-2 custom-scrollbar max-h-[55vh]">
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
               {filteredTypes.map((type) => {
                 const stats = INGREDIENT_STATS[type];
@@ -106,7 +109,7 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
                 const isGod = type.includes('GOD_');
                 const isKing = type.includes('KING_');
                 const isSupreme = type.includes('SUPREME_');
-                const isDangerous = type.startsWith('D_');
+                const isBonus = type.startsWith('BONUS_');
 
                 return (
                   <button
@@ -120,7 +123,7 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
                       ${isGod ? 'border-red-900/50 bg-red-950/20' : ''}
                       ${isKing ? 'border-yellow-900/50 bg-yellow-950/20' : ''}
                       ${isSupreme ? 'border-cyan-900/50 bg-cyan-950/20 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : ''}
-                      ${isDangerous ? 'border-purple-900/50 bg-purple-950/20' : ''}
+                      ${isBonus ? 'border-pink-900/50 bg-pink-950/20' : ''}
                     `}
                   >
                     <div className="w-12 h-12 mb-2 group-hover:scale-110 transition-transform">
@@ -130,14 +133,14 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
                        ${isGod ? 'text-red-400' : 
                          (isKing ? 'text-yellow-400' : 
                            (isSupreme ? 'text-cyan-300' :
-                             (isDangerous ? 'text-purple-400' : 'text-white')))}`}>
+                             (isBonus ? 'text-pink-300' : 'text-white')))}`}>
                       {stats.name}
                     </div>
                     <div className="text-yellow-500 font-mono text-xs">${stats.cost}</div>
                     
-                    {isDangerous && stats.friendlyFire && (
-                        <div className="absolute top-1 right-1 bg-red-600/80 text-[8px] px-1 rounded text-white font-bold">
-                            誤傷
+                    {isBonus && (
+                        <div className="absolute top-1 right-1 bg-pink-600/80 text-[8px] px-1 rounded text-white font-bold">
+                            連動
                         </div>
                     )}
                   </button>
@@ -156,9 +159,9 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
     const tiers = [1, 2, 3];
     
     return (
-      <div className="flex flex-col h-full relative">
+      <div className="flex flex-col relative max-h-[55vh]">
          {/* Header Info */}
-         <div className="flex justify-between items-center mb-4 bg-black/20 p-2 rounded">
+         <div className="flex justify-between items-center mb-4 bg-black/20 p-2 rounded shrink-0">
             <div>
                <h3 className="text-yellow-400 font-bold text-lg">天賦技能樹</h3>
                <p className="text-gray-400 text-xs">每 5 級獲得 1 點技能點。</p>
@@ -169,7 +172,7 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
             </div>
          </div>
 
-         <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar pb-16">
+         <div className="overflow-y-auto pr-2 custom-scrollbar pb-16">
             {skills.length === 0 && (
               <div className="text-center text-gray-500 mt-10">此食材暫無特殊技能樹。</div>
             )}
@@ -209,14 +212,19 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
                               key={skill.id}
                               onClick={() => {
                                 if (canBuy) {
+                                  // Play Sound
                                   audioService.playSkillUnlock();
+                                  
+                                  // Trigger Animation
                                   setJustUnlockedSkillId(skill.id);
-                                  setTimeout(() => setJustUnlockedSkillId(null), 500); // Clear animation state
+                                  setTimeout(() => setJustUnlockedSkillId(null), 600); // Duration slightly longer than CSS anim
+                                  
+                                  // Update State
                                   onSelectSkill(selectedSlot.id, skill.id);
                                 }
                               }}
                               disabled={!canBuy && !isSelected}
-                              className={`p-3 rounded-lg border text-left transition-all relative flex flex-col h-full
+                              className={`p-3 rounded-lg border text-left transition-all duration-300 relative flex flex-col h-full overflow-hidden
                                 ${isSelected 
                                     ? 'bg-blue-900/40 border-blue-400 shadow-[0_0_10px_rgba(96,165,250,0.3)]' 
                                     : (canBuy 
@@ -224,20 +232,29 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
                                       : 'bg-gray-900 border-gray-800 opacity-60 cursor-not-allowed')
                                 }
                                 ${skill.hidden ? 'border-purple-500/30' : ''}
+                                ${isAnimating ? 'ring-2 ring-yellow-400 shadow-[0_0_20px_rgba(250,204,21,0.6)] border-yellow-400' : ''}
                               `}
                             >
-                              <div className="flex justify-between items-start mb-1 w-full">
-                                  <span className={`font-bold text-sm transition-all ${isSelected ? 'text-blue-300' : (skill.hidden ? 'text-purple-300' : 'text-gray-300')} ${isAnimating ? 'animate-skill-unlock' : ''}`}>
+                              <div className="flex justify-between items-start mb-1 w-full relative z-10">
+                                  <span className={`font-bold text-sm transition-all transform origin-left 
+                                    ${isSelected ? 'text-blue-300' : (skill.hidden ? 'text-purple-300' : 'text-gray-300')} 
+                                    ${isAnimating ? 'animate-skill-unlock text-yellow-300 scale-110' : ''}
+                                  `}>
                                     {skill.name}
                                   </span>
                                   {isSelected ? <Check size={14} className="text-blue-400" /> : <span className="text-xs text-yellow-500 font-mono">{skill.cost} SP</span>}
                               </div>
-                              <p className="text-xs text-gray-400 leading-tight mb-2 flex-1">{skill.description}</p>
+                              <p className="text-xs text-gray-400 leading-tight mb-2 flex-1 relative z-10">{skill.description}</p>
                               
                               {!isSelected && isTierUnlocked && (
-                                <div className={`text-[10px] text-center py-1 rounded mt-auto ${canAfford ? 'bg-yellow-600 text-white' : 'bg-gray-700 text-gray-500'}`}>
+                                <div className={`text-[10px] text-center py-1 rounded mt-auto relative z-10 ${canAfford ? 'bg-yellow-600 text-white' : 'bg-gray-700 text-gray-500'}`}>
                                    {canAfford ? '學習技能' : '點數不足'}
                                 </div>
+                              )}
+                              
+                              {/* Success Flash Background */}
+                              {isAnimating && (
+                                <div className="absolute inset-0 bg-yellow-500/20 animate-pulse z-0 pointer-events-none"></div>
                               )}
                             </button>
                           );
@@ -248,8 +265,8 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
             })}
          </div>
 
-         {/* Reset Button (Fixed at bottom) */}
-         <div className="absolute bottom-0 left-0 right-0 bg-[#1e1e1e] pt-2 border-t border-white/5">
+         {/* Reset Button (Sticky at bottom) */}
+         <div className="sticky bottom-0 bg-[#1e1e1e] pt-2 border-t border-white/5 mt-auto">
              <button
                onClick={() => onResetSkills(selectedSlot.id)}
                className="w-full flex items-center justify-center gap-2 py-2 rounded border border-red-800/50 text-red-400 hover:bg-red-900/30 text-xs transition-colors"
@@ -267,24 +284,28 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
     const stats = INGREDIENT_STATS[ingredient.type];
     const upgradeCost = Math.floor(stats.cost * Math.pow(UPGRADE_MULTIPLIER, ingredient.level));
     const canAfford = gameState.money >= upgradeCost;
+    const isMaxLevel = ingredient.level >= GAME_Config.MAX_LEVEL;
 
-    // Calculate current and next stats based on GameCanvas and App logic
-    // Damage: Linear scaling 1 + 0.5 * level (from GameCanvas)
+    // --- Stats Calculations ---
     const currentDmg = Math.floor(stats.damage * (1 + (ingredient.level * 0.5)));
     const nextDmg = Math.floor(stats.damage * (1 + ((ingredient.level + 1) * 0.5)));
-    const dmgDiff = nextDmg - currentDmg;
-
-    // HP: Exponential scaling * 1.2 (from App.tsx manual upgrade logic)
     const nextHp = Math.floor(ingredient.maxHp * STAT_MULTIPLIER);
-    const hpDiff = nextHp - ingredient.maxHp;
+    const currentSpeedMs = Math.floor(stats.attackSpeed / Math.pow(0.9, ingredient.level - 1));
+    const nextSpeedMs = Math.floor(stats.attackSpeed / Math.pow(0.9, ingredient.level));
+    const currentRange = stats.range;
 
-    const isDangerous = ingredient.type.startsWith('D_');
+    const isBonus = ingredient.type.startsWith('BONUS_');
     const isSupreme = ingredient.type.startsWith('SUPREME_');
+    const isCaptain = ingredient.type === IngredientType.SEASONING_CAPTAIN;
+
+    // Get Active Skills
+    const allSkills = getSkillsForType(ingredient.type);
+    const activeSkillsList = allSkills.filter(s => ingredient.selectedSkills.includes(s.id));
 
     return (
-      <div className="flex flex-col gap-4 h-full">
+      <div className="flex flex-col gap-4 w-full">
         {/* Toggle View Tabs */}
-        <div className="flex gap-2 bg-black/40 p-1 rounded-lg self-start">
+        <div className="flex gap-2 bg-black/40 p-1 rounded-lg self-start shrink-0">
            <button 
              onClick={() => setViewMode('STATS')}
              className={`px-4 py-1.5 rounded-md text-sm font-bold flex items-center gap-2 transition-all ${viewMode === 'STATS' ? 'bg-gray-700 text-white shadow' : 'text-gray-400 hover:text-white'}`}
@@ -304,86 +325,134 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
            renderSkillTree(ingredient)
         ) : (
           <>
-            <div className={`flex items-center gap-4 bg-gray-800 p-4 rounded-xl border border-gray-600 flex-1 relative overflow-hidden
-               ${isDangerous ? 'border-purple-600 bg-gray-900' : ''}
-               ${isSupreme ? 'border-cyan-500 bg-gray-900 shadow-[0_0_20px_rgba(6,182,212,0.2)]' : ''}
+            <div className={`flex flex-col bg-gray-800 p-4 rounded-xl border border-gray-600 relative overflow-hidden shrink-0
+               ${isBonus ? 'border-pink-600 bg-gray-900' : ''}
+               ${isSupreme || isCaptain ? 'border-cyan-500 bg-gray-900 shadow-[0_0_20px_rgba(6,182,212,0.2)]' : ''}
             `}>
-              {isDangerous && (
-                  <div className="absolute top-0 right-0 bg-purple-600 text-xs px-2 py-1 text-white font-bold rounded-bl-lg z-10 flex items-center gap-1">
-                      <Radiation size={12} /> 危險物品
+              {/* Top Banner: Image & Name */}
+              <div className="flex items-center gap-4 mb-4">
+                  <div className="w-16 h-16 relative shrink-0 bg-black/30 rounded-lg p-2 border border-white/10">
+                      <div className="w-full h-full">
+                        <IngredientRenderer type={ingredient.type} />
+                      </div>
                   </div>
-              )}
-              {isSupreme && (
-                  <div className="absolute top-0 right-0 bg-cyan-600 text-xs px-2 py-1 text-black font-bold rounded-bl-lg z-10 flex items-center gap-1">
-                      <Gem size={12} /> 美味至極
+                  <div className="min-w-0">
+                    <h3 className="text-xl font-bold text-white flex items-center gap-2 truncate">
+                      {stats.name} 
+                      <span className="text-yellow-500 text-xs font-mono bg-yellow-900/30 px-1.5 py-0.5 rounded border border-yellow-700 shrink-0">Lv.{ingredient.level}</span>
+                    </h3>
+                    <p className="text-gray-400 text-xs mt-1 truncate">{stats.description}</p>
                   </div>
-              )}
-              <div className="w-24 h-24 relative shrink-0">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-full h-full scale-125">
-                      <IngredientRenderer type={ingredient.type} />
-                    </div>
+                  {isBonus && (
+                      <div className="absolute top-0 right-0 bg-pink-600 text-[10px] px-2 py-1 text-white font-bold rounded-bl-lg z-10 flex items-center gap-1">
+                          <Star size={10} /> 加分
+                      </div>
+                  )}
+                  {(isSupreme || isCaptain) && (
+                      <div className="absolute top-0 right-0 bg-cyan-600 text-[10px] px-2 py-1 text-black font-bold rounded-bl-lg z-10 flex items-center gap-1">
+                          <Gem size={10} /> 極致
+                      </div>
+                  )}
+              </div>
+
+              {/* Stats Grid */}
+              <div className="grid grid-cols-2 gap-2 mb-3">
+                  {/* Damage */}
+                  <div className="bg-black/30 px-3 py-2 rounded border border-white/5 flex flex-col justify-center">
+                      <div className="text-gray-400 text-[10px] mb-0.5 flex items-center gap-1"><Sword size={10} /> 攻擊傷害</div>
+                      <div className="flex items-baseline gap-1.5">
+                          <span className="text-lg font-bold text-red-300">{currentDmg}</span>
+                          {!isMaxLevel && (
+                              <div className="flex items-center text-[10px] text-green-400 animate-pulse">
+                                  <ArrowRight size={8} /> {nextDmg}
+                              </div>
+                          )}
+                      </div>
+                  </div>
+
+                  {/* HP */}
+                  <div className="bg-black/30 px-3 py-2 rounded border border-white/5 flex flex-col justify-center">
+                      <div className="text-gray-400 text-[10px] mb-0.5 flex items-center gap-1"><Heart size={10} /> 最大生命</div>
+                      <div className="flex items-baseline gap-1.5">
+                          <span className="text-lg font-bold text-green-300">{Math.floor(ingredient.maxHp)}</span>
+                          {!isMaxLevel && (
+                              <div className="flex items-center text-[10px] text-green-400 animate-pulse">
+                                  <ArrowRight size={8} /> {nextHp}
+                              </div>
+                          )}
+                      </div>
+                  </div>
+
+                  {/* Attack Speed */}
+                  <div className="bg-black/30 px-3 py-2 rounded border border-white/5 flex flex-col justify-center">
+                      <div className="text-gray-400 text-[10px] mb-0.5 flex items-center gap-1"><Clock size={10} /> 攻擊間隔</div>
+                      <div className="flex items-baseline gap-1.5">
+                          <span className="text-lg font-bold text-blue-300">{(currentSpeedMs/1000).toFixed(2)}s</span>
+                          {!isMaxLevel && (
+                              <div className="flex items-center text-[10px] text-green-400 animate-pulse">
+                                  <ArrowRight size={8} /> {(nextSpeedMs/1000).toFixed(2)}s
+                              </div>
+                          )}
+                      </div>
+                  </div>
+
+                  {/* Range */}
+                  <div className="bg-black/30 px-3 py-2 rounded border border-white/5 flex flex-col justify-center">
+                      <div className="text-gray-400 text-[10px] mb-0.5 flex items-center gap-1"><Target size={10} /> 射程範圍</div>
+                      <span className="text-lg font-bold text-yellow-300">{currentRange}</span>
                   </div>
               </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-xl font-bold text-white flex items-center gap-2 truncate">
-                  {stats.name} 
-                  <span className="text-yellow-500 text-sm bg-yellow-900/30 px-2 py-0.5 rounded border border-yellow-700 shrink-0">Lv.{ingredient.level}</span>
-                </h3>
-                <p className="text-gray-400 text-sm mt-1 truncate">{stats.description}</p>
-                
-                <div className="grid grid-cols-2 gap-3 mt-4 text-sm">
-                    <div className="bg-black/30 px-3 py-2 rounded border border-white/5">
-                      <div className="text-gray-400 text-xs mb-1">攻擊傷害</div>
-                      <div className="font-bold text-red-300 flex items-baseline gap-1">
-                        {currentDmg}
-                        {dmgDiff > 0 && <span className="text-green-400 text-xs animate-pulse">(+{dmgDiff})</span>}
-                      </div>
-                    </div>
-                    <div className="bg-black/30 px-3 py-2 rounded border border-white/5">
-                      <div className="text-gray-400 text-xs mb-1">最大生命</div>
-                      <div className="font-bold text-green-300 flex items-baseline gap-1">
-                        {Math.floor(ingredient.maxHp)}
-                        {hpDiff > 0 && <span className="text-green-400 text-xs animate-pulse">(+{hpDiff})</span>}
-                      </div>
-                    </div>
-                    {isDangerous && stats.friendlyFire && (
-                        <div className="col-span-2 bg-red-900/20 px-3 py-2 rounded border border-red-500/30">
-                            <div className="text-red-400 text-xs mb-1 flex items-center gap-1"><Radiation size={10} /> 友軍誤傷 (每秒)</div>
-                            <div className="font-bold text-red-500">
-                                -{stats.friendlyFire} HP
-                            </div>
-                        </div>
-                    )}
-                </div>
+
+              {/* Active Skills List */}
+              <div className="mt-auto">
+                  <div className="text-[10px] text-gray-500 uppercase font-bold mb-1 flex items-center gap-1">
+                      <ShieldCheck size={10} /> 已啟用技能
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 min-h-[30px]">
+                      {activeSkillsList.length > 0 ? (
+                          activeSkillsList.map(skill => (
+                              <div key={skill.id} className="bg-blue-900/40 text-blue-200 text-[10px] px-2 py-1 rounded border border-blue-500/30 flex items-center gap-1" title={skill.description}>
+                                  <Check size={8} /> {skill.name}
+                              </div>
+                          ))
+                      ) : (
+                          <span className="text-gray-600 text-[10px] italic">尚未學習任何技能</span>
+                      )}
+                  </div>
               </div>
             </div>
 
             <div className="flex gap-4 mt-auto">
               <button 
                 onClick={onUpgrade}
-                disabled={!canAfford}
+                disabled={!canAfford || isMaxLevel}
                 className={`flex-1 flex flex-col items-center justify-center py-3 rounded-lg font-bold transition-colors border-b-4 active:border-b-0 active:translate-y-1
-                  ${canAfford 
+                  ${canAfford && !isMaxLevel
                       ? 'bg-green-600 hover:bg-green-500 border-green-800 text-white shadow-lg shadow-green-900/50' 
                       : 'bg-gray-700 border-gray-800 text-gray-500 cursor-not-allowed'}
                 `}
               >
-                <div className="flex items-center gap-2 text-lg">
-                  <Zap size={20} />
-                  升級
-                </div>
-                <div className="text-xs opacity-90 font-mono">
-                  ${upgradeCost.toLocaleString()}
-                </div>
+                  <span className="flex items-center gap-2 text-lg">
+                      <ArrowUp size={20} /> 升級
+                  </span>
+                  {!isMaxLevel && (
+                    <span className="text-xs font-mono opacity-80">${upgradeCost}</span>
+                  )}
+                  {isMaxLevel && <span className="text-xs opacity-80">MAX</span>}
               </button>
-              
+
               <button 
                 onClick={onSell}
-                className="flex-none w-1/3 flex flex-col items-center justify-center bg-red-900/50 hover:bg-red-800 text-red-200 py-3 rounded-lg font-bold border border-red-800 transition-colors"
+                disabled={isCaptain}
+                className={`w-1/3 flex flex-col items-center justify-center border-b-4 active:border-b-0 active:translate-y-1 py-3 rounded-lg transition-colors
+                   ${isCaptain 
+                      ? 'bg-gray-700 border-gray-800 text-gray-500 cursor-not-allowed' 
+                      : 'bg-red-900/50 hover:bg-red-800 border-red-800 text-red-300'}
+                `}
+                title={isCaptain ? "此單位無法販售" : "賣出食材"}
               >
-                <span className="text-lg">賣出</span>
-                <span className="text-xs opacity-80">+${Math.floor(stats.cost * 0.5).toLocaleString()}</span>
+                 <span className="flex items-center gap-1 font-bold"><X size={18} /> {isCaptain ? '不可販售' : '賣出'}</span>
+                 {!isCaptain && <span className="text-xs font-mono opacity-80">+${Math.floor(stats.cost * 0.5)}</span>}
               </button>
             </div>
           </>
@@ -393,47 +462,66 @@ const UpgradeMenu: React.FC<UpgradeMenuProps> = ({ selectedSlot, gameState, onBu
   };
 
   return (
-    <div className="absolute inset-x-0 bottom-0 bg-[#1e1e1e] border-t-4 border-[#3d2b2b] p-4 pb-8 shadow-2xl z-50 animate-slide-up h-[480px]">
-       <div className="max-w-5xl mx-auto relative h-full flex flex-col">
-         <button onClick={onClose} className="absolute -top-8 right-0 bg-red-600 hover:bg-red-500 text-white p-2 rounded-full shadow-lg border-2 border-white/10 z-50">
-           <X size={20} />
-         </button>
-         
-         <div className="flex gap-6 h-full">
-            {/* Left: Actions */}
-            <div className="flex-1 flex flex-col overflow-hidden">
-               <h2 className="text-xl font-bold mb-3 flex items-center gap-2 text-yellow-500 shrink-0">
-                 {currentIngredient ? <Utensils size={24} /> : <ShoppingBag size={24} />}
-                 {currentIngredient ? '管理食材' : '食材商店'}
-               </h2>
-               <div className="flex-1 overflow-hidden min-h-0">
-                  {currentIngredient ? renderUpgrade(currentIngredient) : renderShop()}
-               </div>
-            </div>
+    <div className="fixed inset-0 z-[100] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in" onClick={onClose}>
+      <div 
+        className="bg-[#1e1e1e] w-full max-w-4xl max-h-[90vh] h-auto rounded-2xl border-2 border-[#3d2b2b] shadow-2xl flex flex-col overflow-hidden relative transition-all"
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="bg-[#2a1a1a] p-4 border-b border-[#3d2b2b] flex justify-between items-center shrink-0">
+          <div className="flex items-center gap-3">
+             <div className="bg-orange-600 p-2 rounded-lg text-white">
+                <ChefHat size={24} />
+             </div>
+             <div>
+                <h2 className="text-xl font-bold text-orange-500">
+                   {currentIngredient ? '食材升級中心' : '購買新食材'}
+                </h2>
+                <div className="flex items-center gap-2 text-xs text-gray-400">
+                   <div className="bg-black/50 px-2 py-0.5 rounded text-yellow-400 font-mono">
+                      擁有資金: ${gameState.money}
+                   </div>
+                   {currentIngredient && (
+                     <div className="bg-black/50 px-2 py-0.5 rounded text-blue-300 font-mono">
+                       技能點數: {currentIngredient.availableSkillPoints} SP
+                     </div>
+                   )}
+                </div>
+             </div>
+          </div>
+          <button 
+            onClick={onClose}
+            className="p-2 bg-gray-700 hover:bg-red-600 text-white rounded-full transition-colors"
+          >
+            <X size={20} />
+          </button>
+        </div>
 
-            {/* Right: Chef's Corner - Fixed width */}
-            <div className="w-64 bg-[#2a2a2a] rounded-xl p-4 border border-[#3d2b2b] flex flex-col shrink-0 shadow-inner">
-               <div className="flex items-center gap-2 mb-3 text-orange-400 font-bold">
-                 <ChefHat size={20} />
-                 主廚建議
-               </div>
-               
-               <div className="flex-1 bg-black/30 rounded p-3 mb-3 text-sm text-gray-300 overflow-y-auto italic custom-scrollbar border border-white/5">
-                 {chefMessage || "選好食材了嗎？那些老鼠可不會等你！"}
-               </div>
+        {/* Content Area */}
+        <div className="flex-1 overflow-hidden p-4 relative flex flex-col min-h-0">
+            {currentIngredient ? renderUpgrade(currentIngredient) : renderShop()}
+        </div>
 
-               <button 
-                 onClick={handleAskChef}
-                 disabled={loadingAdvice}
-                 className={`w-full py-3 rounded-lg font-bold text-sm transition-all transform active:scale-95 flex items-center justify-center gap-2 shadow-lg
-                   ${loadingAdvice ? 'bg-gray-600 text-gray-400' : 'bg-orange-600 hover:bg-orange-500 text-white hover:shadow-orange-500/20'}
-                 `}
-               >
-                 {loadingAdvice ? '通靈中...' : '詢問主廚'}
-               </button>
+        {/* Chef Message Footer */}
+        <div className="bg-[#2a1a1a] p-3 border-t border-[#3d2b2b] shrink-0 flex items-start gap-3 relative">
+            <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center shrink-0 border border-gray-600 overflow-hidden">
+                <ChefHat size={20} className="text-gray-300" />
             </div>
-         </div>
-       </div>
+            <div className="flex-1">
+                <div className="text-[10px] text-gray-500 font-bold mb-0.5 uppercase">Master Chef says:</div>
+                <div className="text-sm text-gray-300 italic leading-snug">"{chefMessage || '歡迎光臨！想來點什麼？'}"</div>
+            </div>
+            <button 
+               onClick={handleAskChef}
+               disabled={loadingAdvice}
+               className={`absolute right-3 top-3 bg-blue-600 hover:bg-blue-500 text-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1 shadow-lg transition-transform active:scale-95 ${loadingAdvice ? 'opacity-50 cursor-wait' : ''}`}
+            >
+               {loadingAdvice ? <RotateCcw className="animate-spin" size={12} /> : <Info size={12} />}
+               尋求建議
+            </button>
+        </div>
+
+      </div>
     </div>
   );
 };
