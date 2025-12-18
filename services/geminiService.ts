@@ -1,15 +1,10 @@
+
 import { GoogleGenAI } from "@google/genai";
 import { GameState } from "../types";
 
-const getClient = () => {
-    const apiKey = process.env.API_KEY;
-    if (!apiKey) return null;
-    return new GoogleGenAI({ apiKey });
-}
-
 export const getChefAdvice = async (gameState: GameState, hasIngredients: boolean): Promise<string> => {
-  const ai = getClient();
-  if (!ai) return "找不到 API 金鑰，主廚正在罷工中...";
+  // 修正: 遵照規範初始化 GoogleGenAI 實例
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
   const prompt = `
     你是一個脾氣暴躁但廚藝精湛的燒烤大師。
@@ -28,10 +23,12 @@ export const getChefAdvice = async (gameState: GameState, hasIngredients: boolea
   `;
 
   try {
+    // 修正: 依照指引為基礎文字任務選擇 gemini-3-flash-preview 模型
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3-flash-preview',
       contents: prompt,
     });
+    // 修正: 直接存取 .text 屬性
     return response.text || "快點烤！別發呆！";
   } catch (error) {
     console.error("Gemini API Error:", error);

@@ -26,28 +26,10 @@
         touch-action: none;
         user-select: none;
         -webkit-user-select: none;
-        /* Subtle noise texture for grit */
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
       }
 
-      /* Fonts */
-      .font-display {
-        font-family: 'Black Ops One', cursive; /* Gaming/Military feel */
-      }
-
-      /* Custom Scrollbar */
-      ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-      }
-      ::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.3); 
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #4b5563; 
-        border-radius: 10px;
-        border: 1px solid #1f2937;
-      }
+      .font-display { font-family: 'Black Ops One', cursive; }
 
       /* 3D Button Press Effect */
       .btn-3d {
@@ -59,12 +41,17 @@
         box-shadow: 0 0 0 rgba(0,0,0,0.5);
       }
 
-      /* Textures */
       .bg-wood {
         background-color: #3f2e23;
         background-image: 
           repeating-linear-gradient(45deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 2px, transparent 2px, transparent 4px),
           linear-gradient(to bottom, #4a3627, #2d1f16);
+      }
+
+      .bg-metal-panel {
+        background: linear-gradient(135deg, #374151 0%, #111827 100%);
+        border: 2px solid #4b5563;
+        box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
       }
       
       .bg-metal-grate {
@@ -73,105 +60,32 @@
         background-size: 50px 50px;
       }
 
-      /* Rotate Prompt */
-      #rotate-prompt {
-        display: none;
+      @keyframes hyperCombo {
+        0% { transform: scale(1) rotate(0deg); filter: hue-rotate(0deg); }
+        25% { transform: scale(1.2) rotate(3deg); filter: hue-rotate(90deg); }
+        50% { transform: scale(1.1) rotate(-3deg); filter: hue-rotate(180deg); }
+        75% { transform: scale(1.3) rotate(2deg); filter: hue-rotate(270deg); }
+        100% { transform: scale(1) rotate(0deg); filter: hue-rotate(360deg); }
       }
+      .animate-hyper-combo { animation: hyperCombo 0.3s infinite linear; }
+
+      @keyframes pulseGlow {
+        0%, 100% { box-shadow: 0 0 5px #f97316; }
+        50% { box-shadow: 0 0 25px #f97316; }
+      }
+      .animate-pulse-glow { animation: pulseGlow 1s infinite ease-in-out; }
+
+      @keyframes fireParticles {
+        0% { transform: translateY(0) scale(1); opacity: 1; }
+        100% { transform: translateY(-50px) scale(0); opacity: 0; }
+      }
+      .fire-particle { animation: fireParticles 0.8s forwards ease-out; }
+
+      #rotate-prompt { display: none; }
       @media screen and (orientation: portrait) {
-        #rotate-prompt {
-          display: flex;
-        }
-        #root {
-          display: none;
-        }
+        #rotate-prompt { display: flex; }
+        #root { display: none; }
       }
-
-      /* Animations */
-      @keyframes heatHaze {
-        0% { filter: blur(0px) hue-rotate(0deg); transform: scale(1); }
-        50% { filter: blur(1px) hue-rotate(-5deg); transform: scale(1.01); }
-        100% { filter: blur(0px) hue-rotate(0deg); transform: scale(1); }
-      }
-      
-      .animate-heat {
-        animation: heatHaze 3s infinite ease-in-out;
-      }
-
-      @keyframes levelUpPop {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.4) rotate(5deg); filter: brightness(1.5); }
-        100% { transform: scale(1); filter: brightness(1); }
-      }
-      .animate-level-up { animation: levelUpPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-
-      @keyframes recoil {
-        0% { transform: scale(1) translateX(0); }
-        20% { transform: scale(0.9) translateX(-5px); } 
-        40% { transform: scale(1.1) translateX(5px); }
-        100% { transform: scale(1) translateX(0); }
-      }
-      .animate-recoil { animation: recoil 0.2s cubic-bezier(0.25, 1, 0.5, 1); }
-
-      @keyframes shake {
-        0% { transform: translate(1px, 1px) rotate(0deg); }
-        10% { transform: translate(-1px, -2px) rotate(-1deg); }
-        30% { transform: translate(3px, 2px) rotate(0deg); }
-        50% { transform: translate(-1px, 2px) rotate(-1deg); }
-        70% { transform: translate(3px, 1px) rotate(-1deg); }
-        90% { transform: translate(1px, 2px) rotate(0deg); }
-        100% { transform: translate(1px, -2px) rotate(-1deg); }
-      }
-      .animate-shake { animation: shake 0.5s; }
-
-      @keyframes redFlash {
-        0% { box-shadow: inset 0 0 0 0 rgba(220, 38, 38, 0); }
-        50% { box-shadow: inset 0 0 50px 20px rgba(220, 38, 38, 0.5); }
-        100% { box-shadow: inset 0 0 0 0 rgba(220, 38, 38, 0); }
-      }
-      .animate-damage { animation: redFlash 0.3s ease-out; }
-
-      @keyframes skillUnlockPop {
-        0% { transform: scale(1); }
-        40% { transform: scale(1.4); color: #60A5FA; text-shadow: 0 0 10px rgba(96, 165, 250, 0.8); }
-        100% { transform: scale(1); }
-      }
-      .animate-skill-unlock { animation: skillUnlockPop 0.5s cubic-bezier(0.36, 0, 0.66, -0.56); }
-
-      @keyframes fireFlicker {
-        0%, 100% { opacity: 0.3; }
-        50% { opacity: 0.5; }
-      }
-      .animate-fire-glow { animation: fireFlicker 3s infinite ease-in-out; }
-
-      @keyframes running {
-        0% { transform: translateY(0) rotate(5deg); }
-        25% { transform: translateY(-10px) rotate(0deg); }
-        50% { transform: translateY(0) rotate(-5deg); }
-        75% { transform: translateY(-10px) rotate(0deg); }
-        100% { transform: translateY(0) rotate(5deg); }
-      }
-      .animate-run { animation: running 0.4s infinite linear; }
-
-      @keyframes smokePass {
-        0% { transform: translateX(-100%); opacity: 0; }
-        40% { transform: translateX(0%); opacity: 1; }
-        60% { transform: translateX(0%); opacity: 1; }
-        100% { transform: translateX(100%); opacity: 0; }
-      }
-      .animate-smoke { animation: smokePass 1.2s ease-in-out forwards; }
-
-      @keyframes titleDrop {
-        0% { transform: translateY(-100px) scale(0.8); opacity: 0; }
-        60% { transform: translateY(20px) scale(1.1); opacity: 1; }
-        100% { transform: translateY(0) scale(1); opacity: 1; }
-      }
-      .animate-title-drop { animation: titleDrop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-
-      @keyframes zoomInFade {
-        0% { transform: scale(0.9); opacity: 0; }
-        100% { transform: scale(1); opacity: 1; }
-      }
-      .animate-zoom-in { animation: zoomInFade 0.5s ease-out forwards; }
     </style>
   <script type="importmap">
 {
@@ -186,7 +100,7 @@
 </script>
 </head>
   <body>
-    <div id="rotate-prompt" class="fixed inset-0 bg-[#0f0505] z-[9999] flex flex-col items-center justify-center text-center p-8 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]">
+    <div id="rotate-prompt" class="fixed inset-0 bg-[#0f0505] z-[9999] flex flex-col items-center justify-center text-center p-8">
        <div class="animate-bounce mb-8 text-orange-500">
           <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
              <path d="M12 3a9 9 0 1 0 9 9" />
@@ -195,7 +109,7 @@
           </svg>
        </div>
        <h2 class="text-3xl font-display text-white mb-4">請旋轉裝置</h2>
-       <p class="text-gray-400 font-sans">為了最佳的燒烤體驗，<br/>請將您的裝置轉為橫向。</p>
+       <p class="text-gray-400">為了最佳的燒烤戰鬥體驗，請使用橫向模式。</p>
     </div>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>

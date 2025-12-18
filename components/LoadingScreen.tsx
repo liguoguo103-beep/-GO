@@ -12,23 +12,20 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
   const [loadingText, setLoadingText] = useState("正在準備木炭...");
 
   useEffect(() => {
-    // Text changes
     const textTimers = [
-      setTimeout(() => setLoadingText("正在醃製肉串..."), 1000),
-      setTimeout(() => setLoadingText("召喚傳說中的食材..."), 2000),
-      setTimeout(() => setLoadingText("趕走偷吃的老鼠..."), 3000),
-      setTimeout(() => setLoadingText("點火！"), 3800),
+      setTimeout(() => setLoadingText("正在醃製頂級肉串..."), 1000),
+      setTimeout(() => setLoadingText("召喚傳說中的食材大師..."), 2000),
+      setTimeout(() => setLoadingText("驅逐飢餓的老鼠偵察兵..."), 3000),
+      setTimeout(() => setLoadingText("猛火點燃！"), 3800),
     ];
 
-    // Progress bar loop
     const interval = setInterval(() => {
       setProgress(prev => {
         if (prev >= 100) {
           clearInterval(interval);
-          setTimeout(onComplete, 500); // Small delay before closing
+          setTimeout(onComplete, 500);
           return 100;
         }
-        // Accelerate towards the end
         const increment = prev > 80 ? 2 : prev > 50 ? 1 : 0.5;
         return Math.min(prev + increment, 100);
       });
@@ -41,72 +38,27 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 z-[100] bg-[#1a0505] flex flex-col items-center justify-center overflow-hidden">
-        {/* Background Atmosphere */}
-        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-red-900 via-black to-black animate-pulse"></div>
-        
-        {/* Promo / Logo Area */}
-        <div className="relative z-10 flex flex-col items-center mb-16 scale-110 md:scale-150 transform transition-all">
-            <div className="flex items-center gap-2 mb-2">
-                 <Flame size={40} className="text-orange-500 animate-fire-glow" />
-                 <Flame size={56} className="text-red-600 animate-fire-glow" style={{ animationDelay: '0.2s' }} />
-                 <Flame size={40} className="text-yellow-500 animate-fire-glow" style={{ animationDelay: '0.4s' }} />
-            </div>
-            
-            <h1 className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-yellow-400 to-red-600 tracking-tighter drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] stroke-white" 
-                style={{ WebkitTextStroke: '2px #3d0000' }}>
-              烤串英雄
-            </h1>
-            <div className="text-yellow-200 font-bold tracking-[0.5em] text-sm mt-2 opacity-80 uppercase">
-                最強燒烤
-            </div>
-            <div className="mt-4 px-4 py-1 bg-white/10 rounded-full border border-white/20 text-xs text-gray-400">
-                策略塔防 x 美味燒烤
-            </div>
+    <div className="fixed inset-0 z-[300] bg-[#0f0505] flex flex-col items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 opacity-25 bg-[radial-gradient(circle_at_center,_#7f1d1d_0%,_#000_80%)] animate-pulse"></div>
+        <div className="relative z-10 flex flex-col items-center mb-20 scale-125 md:scale-150 transform transition-all">
+            <div className="flex items-center gap-4 mb-4"><Flame size={50} className="text-orange-500 animate-fire-glow" /><Flame size={80} className="text-red-600 animate-fire-glow" style={{ animationDelay: '0.2s' }} /><Flame size={50} className="text-yellow-500 animate-fire-glow" style={{ animationDelay: '0.4s' }} /></div>
+            <h1 className="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-yellow-300 via-orange-500 to-red-700 tracking-tighter drop-shadow-[0_6px_0_#000] font-display" style={{ WebkitTextStroke: '2px #fff' }}>烤串英雄</h1>
+            <div className="text-yellow-200 font-black tracking-[0.6em] text-lg mt-4 opacity-90 uppercase font-display italic drop-shadow-md">最強燒烤 ‧ 終極防禦</div>
+            <div className="mt-8 px-8 py-2 bg-black/60 rounded-full border-2 border-white/10 text-sm text-gray-400 font-black tracking-widest font-display shadow-2xl">策略塔防 X 極致美味</div>
         </div>
 
-        {/* Progress Section */}
-        <div className="w-full max-w-2xl px-8 relative z-10">
-            {/* The Runner Track */}
-            <div className="w-full h-1 bg-gray-700 rounded-full mb-8 relative">
-                 {/* Progress Fill */}
-                 <div 
-                   className="h-full bg-gradient-to-r from-orange-600 to-yellow-500 rounded-full transition-all duration-75 ease-linear"
-                   style={{ width: `${progress}%` }}
-                 ></div>
-
-                 {/* The Running Meat */}
-                 <div 
-                    className="absolute top-1/2 -translate-y-1/2 -ml-6 w-12 h-12 transition-all duration-75 ease-linear"
-                    style={{ left: `${progress}%` }}
-                 >
-                    <div className="w-full h-full animate-run">
-                       {/* Switch to King Beef when close to done for visual flair */}
-                       {progress > 80 ? <KingBeefSVG /> : <BeefSVG />}
-                       
-                       {/* Dust particles behind */}
-                       <div className="absolute bottom-0 -left-4 flex gap-1">
-                          <div className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-ping opacity-50"></div>
-                          <div className="w-1 h-1 bg-gray-600 rounded-full animate-ping opacity-30" style={{ animationDelay: '0.1s' }}></div>
-                       </div>
-                    </div>
-                    {/* Speech Bubble */}
-                    <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-white text-black text-[10px] font-bold px-2 py-0.5 rounded whitespace-nowrap shadow-lg">
-                        {Math.floor(progress)}%
-                    </div>
+        <div className="w-full max-w-3xl px-12 relative z-10">
+            <div className="w-full h-2 bg-stone-900 rounded-full mb-12 relative shadow-inner border-t border-white/5">
+                 <div className="h-full bg-gradient-to-r from-orange-600 via-yellow-500 to-white rounded-full transition-all duration-75 ease-linear shadow-[0_0_15px_#f59e0b]" style={{ width: `${progress}%` }}></div>
+                 <div className="absolute top-1/2 -translate-y-1/2 -ml-8 w-20 h-20 transition-all duration-75 ease-linear" style={{ left: `${progress}%` }}>
+                    <div className="w-full h-full animate-run drop-shadow-[0_5px_15px_rgba(0,0,0,0.8)]">{progress > 80 ? <KingBeefSVG /> : <BeefSVG />}<div className="absolute bottom-2 -left-6 flex gap-2"><div className="w-2 h-2 bg-orange-600/50 rounded-full animate-ping"></div><div className="w-1.5 h-1.5 bg-yellow-500/30 rounded-full animate-ping" style={{ animationDelay: '0.1s' }}></div></div></div>
+                    <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white text-black text-sm font-black px-4 py-1 rounded-full whitespace-nowrap shadow-2xl font-display">{Math.floor(progress)}%</div>
                  </div>
             </div>
-            
-            {/* Loading Text */}
-            <div className="text-center font-mono text-orange-300 animate-pulse text-sm min-h-[1.5rem]">
-               {loadingText}
-            </div>
+            <div className="text-center font-display font-black tracking-widest text-orange-400 animate-pulse text-2xl drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] min-h-[2.5rem]">{loadingText}</div>
         </div>
 
-        {/* Footer */}
-        <div className="absolute bottom-4 text-center text-[10px] text-gray-600">
-           © 2024 Grill Hero Studio. 請勿食用螢幕。
-        </div>
+        <div className="absolute bottom-8 text-center text-xs text-stone-600 font-black tracking-widest font-display opacity-50 uppercase">© 2024 GRILL HERO STUDIO ‧ MADE WITH PASSION</div>
     </div>
   );
 };
