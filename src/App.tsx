@@ -4,6 +4,7 @@ import GameCanvas from './components/GameCanvas';
 import UpgradeMenu from './components/UpgradeMenu';
 import SkillGlossary from './components/SkillGlossary';
 import LoadingScreen from './components/LoadingScreen';
+import GameUI from './components/GameUI';
 import { GameState, GameStatus, Slot, Enemy, IngredientType, Ingredient } from './types';
 import { GAME_Config, INGREDIENT_STATS, UPGRADE_MULTIPLIER, STAT_MULTIPLIER, getSkillsForType } from './constants';
 import { Play, RotateCcw, Volume2, VolumeX, ArrowRight, Trophy, BookOpen, Tv, HeartPulse, Coins, X, Flame, Pause, Home, Minus, Plus, Grid3X3, ArrowLeftRight, Heart, Skull, MousePointer2 } from 'lucide-react';
@@ -246,11 +247,14 @@ const App: React.FC = () => {
         </div>
       )}
 
-      <div className={`w-full max-w-7xl aspect-video transition-all duration-1000 
+      <div className={`w-full max-w-7xl aspect-video transition-all duration-1000 relative
           ${gameState.status === GameStatus.MENU || gameState.status === GameStatus.LOADING ? 'opacity-20 blur-3xl scale-90' : 'opacity-100 scale-100'}
           ${gameState.status === GameStatus.PAUSED ? 'opacity-40 blur-lg' : ''}
       `}>
         <GameCanvas gameState={gameState} setGameState={setGameState} slots={slots} setSlots={setSlots} enemies={enemies} setEnemies={setEnemies} onSlotClick={handleSlotClick} selectedSlotId={selectedSlotId} />
+
+        {/* New UI Overlay */}
+        {gameState.status === GameStatus.PLAYING && <GameUI />}
       </div>
 
       {selectedSlotId && gameState.status === GameStatus.PLAYING && (

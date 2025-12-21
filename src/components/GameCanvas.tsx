@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
-import { GameState, Slot, Enemy, Projectile, IngredientType, GameStatus, EnemyType, Ingredient } from '../types';
-import { GAME_Config, INGREDIENT_STATS, ENEMY_STATS, STAT_MULTIPLIER } from '../constants';
+import { GameState, Slot, Enemy, Projectile, IngredientType, GameStatus, EnemyType, Ingredient } from '../types.ts';
+import { GAME_Config, INGREDIENT_STATS, ENEMY_STATS, STAT_MULTIPLIER } from '../constants.ts';
 import CuteIngredient from './CuteIngredient';
 import { EnemyRenderer, ProjectileSVG } from './GameAssets';
 import { Heart, Coins, Trophy, Zap, Crosshair, BicepsFlexed, ArrowUp, Flame, UtensilsCrossed, Leaf, Skull, Radiation, Utensils, Star, Trash2, Sword, ShieldAlert, Activity } from 'lucide-react';

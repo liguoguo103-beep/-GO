@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
-import { IngredientType, Slot, GameState, Ingredient, Skill } from '../types';
-import { INGREDIENT_STATS, UPGRADE_MULTIPLIER, STAT_MULTIPLIER, getSkillsForType, GAME_Config } from '../constants';
-import { getChefAdvice } from '../services/geminiService';
+import { IngredientType, Slot, GameState, Ingredient, Skill } from '../types.ts';
+import { INGREDIENT_STATS, UPGRADE_MULTIPLIER, STAT_MULTIPLIER, getSkillsForType, GAME_Config } from '../constants.ts';
+import { getChefAdvice } from '../services/geminiService.ts';
 import { ChefHat, Info, X, Zap, Utensils, ShoppingBag, Sprout, Lock, Check, RotateCcw, Radiation, Gem, Sword, Heart, Clock, Target, ArrowRight, ShieldCheck, ArrowUp, Star, Coins } from 'lucide-react';
 import { IngredientRenderer } from './GameAssets';
 import { audioService } from '../services/audioService';

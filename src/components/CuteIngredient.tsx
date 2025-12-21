@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { IngredientType } from '../types';
+import { IngredientType } from '../types.ts';
 import { IngredientRenderer } from './GameAssets';
 
 interface CuteIngredientProps {
