@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
-import { IngredientType } from '../types';
-import { INGREDIENT_STATS, getSkillsForType } from '../constants';
+import { IngredientType } from '../types.ts';
+import { INGREDIENT_STATS, getSkillsForType } from '../constants.ts';
 import { IngredientRenderer } from './GameAssets';
 import { X, BookOpen, Lock, Star, Shield, Zap, EyeOff } from 'lucide-react';
 
